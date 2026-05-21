@@ -70,7 +70,7 @@
 
       <div class="field">
         <label class="field-label">公司名稱 <span class="req">*</span></label>
-        <input type="text" placeholder="請填寫公司全名">
+        <input type="text" placeholder="請填寫公司全名" maxlength="50">
       </div>
 
       <div class="field">
@@ -81,11 +81,11 @@
       <div class="grid-2">
         <div class="field">
           <label class="field-label">聯絡人姓名 <span class="req">*</span></label>
-          <input type="text" placeholder="姓名">
+          <input type="text" placeholder="姓名" maxlength="50">
         </div>
         <div class="field">
           <label class="field-label">職稱抬頭 <span class="opt">選填</span></label>
-          <input type="text" placeholder="例：行銷經理、品牌公關">
+          <input type="text" placeholder="例：行銷經理、品牌公關" maxlength="20">
         </div>
       </div>
 
@@ -97,7 +97,7 @@
         </div>
         <div class="field">
           <label class="field-label">分機 <span class="opt">選填</span></label>
-          <input type="text" placeholder="123">
+          <input type="text" placeholder="123" maxlength="10">
         </div>
       </div>
 
@@ -161,7 +161,7 @@
           <div class="grid-2">
             <div class="field">
               <label class="field-label">產品名稱 <span class="req">*</span></label>
-              <input type="text" class="p-name-input" placeholder="請填寫完整產品名稱" data-key="name">
+              <input type="text" class="p-name-input" placeholder="請填寫完整產品名稱" data-key="name" maxlength="50">
             </div>
             <div class="field">
               <label class="field-label">產品類別 <span class="req">*</span></label>
@@ -177,8 +177,8 @@
             </div>
           </div>
           <div class="field">
-            <label class="field-label">產品規格 <span class="req">*</span></label>
-            <input type="text" placeholder="例：50ml、30g、1入組" data-key="spec">
+            <label class="field-label">產品規格 <span class="req">*</span> <span class="opt">10字以內</span></label>
+            <input type="text" placeholder="例：50ml、30g、1入組" data-key="spec" maxlength="10">
             <div class="field-hint">填寫容量、重量或件數等規格說明</div>
           </div>
           <div class="field">
@@ -334,7 +334,6 @@
       products.push({ uid, header, card });
       updateAddBtn();
       switchToProduct(uid);
-      saveToStorage();
     }
 
     function deleteProduct(uid) {
@@ -454,12 +453,11 @@
             email:     document.querySelector('input[type="email"]')?.value ?? '',
           },
           products: products.map(p => ({
-            uid:          p.uid,
             name:         p.card.querySelector('input[data-key="name"]')?.value ?? '',
             category:     p.card.querySelector('select[data-key="category"]')?.value ?? '',
             spec:         p.card.querySelector('input[data-key="spec"]')?.value ?? '',
             desc:         p.card.querySelector('textarea[data-key="desc"]')?.value ?? '',
-            new_product:  p.card.querySelector('input[type="radio"]:checked')?.value ?? '',
+            is_new:       p.card.querySelector('input[type="radio"]:checked')?.value ?? '',
             features:     [...p.card.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value),
             feature_note: p.card.querySelector('textarea[data-key="feature_note"]')?.value ?? '',
           }))
@@ -498,8 +496,8 @@
           fillCardField(card, 'textarea[data-key="desc"]', pd.desc);
           fillCardField(card, 'textarea[data-key="feature_note"]', pd.feature_note);
 
-          if (pd.new_product) {
-            const r = card.querySelector(`input[type="radio"][value="${pd.new_product}"]`);
+          if (pd.is_new) {
+            const r = card.querySelector(`input[type="radio"][value="${pd.is_new}"]`);
             if (r) r.checked = true;
           }
           (pd.features ?? []).forEach(v => {
@@ -665,6 +663,36 @@
     });
 
     // ═══════════════════════════════════════════
+    //  COLLECT FORM DATA
+    // ═══════════════════════════════════════════
+    const CATEGORY_MAP = { '保養':0, '香氛':1, '髮品':2, '口服':3, '儀器':4, '醫美':5 };
+    const FEATURE_MAP  = { '珍稀成分':0, '修護潤澤':1, '永續環保':2, '獨家技術':3, '健康養身':4, '其他':5 };
+
+    function collectFormData() {
+      return {
+        contact: {
+          company: document.querySelector('input[placeholder="請填寫公司全名"]')?.value.trim() ?? '',
+          brand:   document.querySelector('input[placeholder="請填寫品牌名稱（50字以內）"]')?.value.trim() ?? '',
+          name:    document.querySelector('input[placeholder="姓名"]')?.value.trim() ?? '',
+          title:   document.querySelector('input[placeholder="例：行銷經理、品牌公關"]')?.value.trim() ?? '',
+          phone:   document.querySelector('input[placeholder="0212345678"]')?.value.trim() ?? '',
+          ext:     document.querySelector('input[placeholder="123"]')?.value.trim() ?? '',
+          email:   document.querySelector('input[type="email"]')?.value.trim() ?? '',
+        },
+        products: products.map((p, i) => ({
+          position:     i + 1,
+          name:         p.card.querySelector('input[data-key="name"]')?.value.trim() ?? '',
+          category:     CATEGORY_MAP[p.card.querySelector('select[data-key="category"]')?.value] ?? null,
+          spec:         p.card.querySelector('input[data-key="spec"]')?.value.trim() ?? '',
+          desc:         p.card.querySelector('textarea[data-key="desc"]')?.value.trim() ?? '',
+          is_new:       p.card.querySelector('input[type="radio"]:checked')?.value === 'yes',
+          features:     [...p.card.querySelectorAll('input[type="checkbox"]:checked')].map(cb => FEATURE_MAP[cb.value]),
+          feature_note: p.card.querySelector('textarea[data-key="feature_note"]')?.value.trim() ?? '',
+        })),
+      };
+    }
+
+    // ═══════════════════════════════════════════
     //  SUBMIT
     // ═══════════════════════════════════════════
     document.getElementById('submitBtn').addEventListener('click', () => {
@@ -679,6 +707,16 @@
         }, 80);
         return;
       }
+
+      const payload = collectFormData();
+      console.log('📋 報名資料 payload：', payload);
+
+      // 有 API 之後取消注解：
+      // await fetch('https://your-api.com/registrations', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(payload),
+      // });
 
       // Build success product list
       const list = document.getElementById('successProductList');
@@ -704,6 +742,7 @@
     // ═══════════════════════════════════════════
     document.getElementById('addProductBtnBottom').addEventListener('click', () => {
       addProduct();
+      saveToStorage();
       setTimeout(() => {
         const items = document.querySelectorAll('.acc-item');
         const last = items[items.length - 1];
