@@ -139,6 +139,21 @@
   <!-- TOAST -->
   <div id="toast">✓ &nbsp;報名成功！感謝您的報名</div>
 
+  <!-- ERROR OVERLAY -->
+  <div id="error-overlay">
+    <div class="error-card">
+      <div class="error-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="8" y1="8" x2="20" y2="20" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="20" y1="8" x2="8" y2="20" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="error-title">送出失敗</div>
+      <div class="error-body" id="errorBody"></div>
+      <button class="error-close" id="errorCloseBtn">確認</button>
+    </div>
+  </div>
+
   <!-- SUCCESS OVERLAY -->
   <div id="success-overlay">
     <div class="success-icon">
@@ -156,6 +171,9 @@
     // ═══════════════════════════════════════════
     //  CONSTANTS & STATE
     // ═══════════════════════════════════════════
+    const API_URL = 'https://api.beautyawards.tvbs-testing.com.tw/vendors/api/v1/register';
+    // 正式站：const API_URL = 'https://api.beautyawards.tvbs.com.tw/vendors/api/v1/register';
+
     const MAX_PRODUCTS = 5;
     const LS_KEY = 'unfurl_form_2026';
     let uidCounter = 0;
@@ -708,15 +726,33 @@
     }
 
     // ═══════════════════════════════════════════
+    //  SUBMIT ERROR DISPLAY
+    // ═══════════════════════════════════════════
+    function showSubmitError(json) {
+      const body = document.getElementById('errorBody');
+      if (json.errors?.length) {
+        body.innerHTML = json.errors.map(e => `<p>${e.message}</p>`).join('');
+      } else {
+        body.innerHTML = `<p>${json.message || '送出失敗，請稍後再試'}</p>`;
+      }
+      document.getElementById('error-overlay').classList.add('show');
+    }
+
+    document.getElementById('errorCloseBtn').addEventListener('click', () => {
+      document.getElementById('error-overlay').classList.remove('show');
+    });
+    document.getElementById('error-overlay').addEventListener('click', e => {
+      if (e.target === e.currentTarget) e.currentTarget.classList.remove('show');
+    });
+
+    // ═══════════════════════════════════════════
     //  SUBMIT
     // ═══════════════════════════════════════════
-    document.getElementById('submitBtn').addEventListener('click', () => {
+    document.getElementById('submitBtn').addEventListener('click', async () => {
       const { valid, firstErrorUid, firstErrorField } = validateAll();
 
       if (!valid) {
-        // Switch to the product tab with the first error (if it's a product error)
         if (firstErrorUid !== null) switchToProduct(firstErrorUid);
-        // Small delay so the tab switch renders before scroll
         setTimeout(() => {
           firstErrorField?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 80);
@@ -726,30 +762,46 @@
       const payload = collectFormData();
       console.log('📋 報名資料 payload：', payload);
 
-      // 有 API 之後取消注解：
-      // await fetch('https://your-api.com/registrations', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(payload),
-      // });
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = '送出中…';
 
-      // Build success product list
-      const list = document.getElementById('successProductList');
-      const body = document.getElementById('successBody');
-      list.innerHTML = '';
-      products.forEach((p, i) => {
-        const name = p.card.querySelector('input[data-key="name"]')?.value.trim() || `產品 ${i + 1}`;
-        const cat  = p.card.querySelector('select[data-key="category"]')?.value || '';
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="pill-num">${i + 1}</span><span>${name}${cat ? '　<span style="opacity:.55;font-size:.82em;">' + cat + '</span>' : ''}</span>`;
-        list.appendChild(li);
-      });
-      body.innerHTML = `感謝您報名女人我最大賞 2026，共報名 <strong>${products.length}</strong> 項產品：`;
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const json = await res.json();
 
-      // Clear storage on success
-      try { localStorage.removeItem(LS_KEY); } catch(e) {}
+        if (!res.ok) {
+          showSubmitError(json);
+          btn.disabled = false;
+          btn.textContent = '送出報名';
+          return;
+        }
 
-      document.getElementById('success-overlay').classList.add('show');
+        // Build success product list
+        const list = document.getElementById('successProductList');
+        const body = document.getElementById('successBody');
+        list.innerHTML = '';
+        products.forEach((p, i) => {
+          const name = p.card.querySelector('input[data-key="name"]')?.value.trim() || `產品 ${i + 1}`;
+          const cat  = p.card.querySelector('select[data-key="category"]')?.value || '';
+          const li = document.createElement('li');
+          li.innerHTML = `<span class="pill-num">${i + 1}</span><span>${name}${cat ? '　<span style="opacity:.55;font-size:.82em;">' + cat + '</span>' : ''}</span>`;
+          list.appendChild(li);
+        });
+        body.innerHTML = `感謝您報名女人我最大賞 2026，共報名 <strong>${products.length}</strong> 項產品：`;
+
+        try { localStorage.removeItem(LS_KEY); } catch(e) {}
+        document.getElementById('success-overlay').classList.add('show');
+
+      } catch (err) {
+        showSubmitError({ message: '網路連線異常，請稍後再試' });
+        btn.disabled = false;
+        btn.textContent = '送出報名';
+      }
     });
 
     // ═══════════════════════════════════════════
