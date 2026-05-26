@@ -41,17 +41,10 @@
     <link rel="stylesheet" href="../css/form.css" />
     <style>
       .banner-title {
-        font-family: "Cormorant Garamond", serif;
-        font-style: italic;
-        font-weight: 500;
-      }
-      .banner-tagline {
         font-family: "Noto Serif TC", serif;
-        font-size: 20px;
-        font-weight: 400;
-        letter-spacing: 0.08em;
-        margin: 0.6em 0 1.4em;
-        opacity: 0.85;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 0.06em;
       }
     </style>
   </head>
@@ -144,9 +137,8 @@
       <!-- BANNER -->
       <div class="banner">
         <div class="banner-content">
-          <h1 class="banner-title">UNFURL</h1>
-          <p class="banner-tagline">不只是大賞，更是對美的宣告</p>
-          <div class="banner-dates">
+          <h1 class="banner-title">美，由我綻放</h1>
+          <div class="banner-dates" id="bannerDates">
             <span>報名&#xFF5C;即日起至2026.06.30</span>
           </div>
         </div>
@@ -155,7 +147,7 @@
     <!-- /banner-wrap -->
 
     <!-- FORM -->
-    <div class="form-container">
+    <div class="form-container" id="formContainer">
       <!-- steps -->
       <div class="form-meta-row">
         <p class="form-required-note"><span class="req">*</span> 為必填欄位</p>
@@ -243,6 +235,23 @@
       <div class="form-note">送出即代表同意主辦單位之個資使用與報名規則</div>
     </div>
 
+    <!-- CLOSED STATE — shown after 2026-06-30 23:59:59 (+08:00) -->
+    <div class="form-closed" id="formClosed" style="display: none;">
+      <div class="form-closed-eyebrow">Registration　·　Closed</div>
+      <div class="form-closed-title">報名已於 06.30 結束</div>
+      <p class="form-closed-body">
+        感謝品牌共襄盛舉，<br />
+        2026 女人我最大賞報名期間已結束。
+      </p>
+      <div class="form-closed-next">
+        下一站<strong>10.05 美妝年度盛典</strong>
+      </div>
+      <br />
+      <a href="/beautyawards" class="form-closed-back">
+        回到首頁 <span style="font-family: Inter, sans-serif;">→</span>
+      </a>
+    </div>
+
     <!-- TOAST -->
     <div id="toast">✓ &nbsp;報名成功！感謝您的報名</div>
 
@@ -313,6 +322,29 @@
     </div>
 
     <script>
+      // ═══════════════════════════════════════════
+      //  REGISTRATION DEADLINE CHECK
+      //  (must match index.html — same cutoff)
+      // ═══════════════════════════════════════════
+      const REGISTRATION_CUTOFF = new Date("2026-07-01T00:00:00+08:00");
+      const DEBUG_OVERRIDE = new URLSearchParams(window.location.search).get("debug");
+      const isRegistrationClosed = () => {
+        if (DEBUG_OVERRIDE === "closed") return true;
+        if (DEBUG_OVERRIDE === "open") return false;
+        return new Date() >= REGISTRATION_CUTOFF;
+      };
+
+      if (isRegistrationClosed()) {
+        // Swap form for closed message and update banner copy
+        const formContainer = document.getElementById("formContainer");
+        const formClosed = document.getElementById("formClosed");
+        const bannerDates = document.getElementById("bannerDates");
+        if (formContainer) formContainer.style.display = "none";
+        if (formClosed) formClosed.style.display = "block";
+        if (bannerDates) bannerDates.innerHTML = "<span>報名期間已結束</span>";
+        // Skip all form initialization below — nothing to wire up
+      } else {
+
       // ═══════════════════════════════════════════
       //  CONSTANTS & STATE
       // ═══════════════════════════════════════════
@@ -1052,7 +1084,6 @@
           }
 
           const payload = collectFormData();
-          console.log("📋 報名資料 payload：", payload);
 
           const btn = document.getElementById("submitBtn");
           btn.disabled = true;
@@ -1136,6 +1167,7 @@
       // ═══════════════════════════════════════════
       addProduct(); // creates product 1
       loadFromStorage();
+      } // end of "if (!isRegistrationClosed())" block
     </script>
   </body>
 </html>
