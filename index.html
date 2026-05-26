@@ -38,12 +38,6 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/index.css" />
-    <style>
-      .hero-title em {
-        font-family: "Cormorant Garamond", serif;
-        font-weight: 500;
-      }
-    </style>
   </head>
   <body>
     <!-- NAV -->
@@ -151,25 +145,23 @@
       </div>
 
       <div class="hero-content">
-        <h1 class="hero-title"><em>UNFURL</em></h1>
-        <div class="hero-divider"></div>
-        <p class="hero-manifesto-title" style="font-size: 32px">
-          不只是大賞，更是對美的宣告
-        </p>
-        <p class="hero-manifesto-body" style="font-size: 20px">
-          女人我最大賞 2026 以 UNFURL 為年度關鍵字。<br />編輯部不再只是評審或試用者，而是市場詮釋者。<br />產品以「趨勢佐證」身份進場，每一件品項，都是當下趨勢的具體形貌。
+        <h1 class="hero-manifesto-title">
+          美，由我綻放
+        </h1>
+        <p class="hero-manifesto-keyword">UNFURL</p>
+        <p class="hero-manifesto-body">
+          2026 女人我最大賞以「UNFURL」作為年度關鍵字。<br />編輯部、達人與醫師團隊，從評審試用轉向趨勢觀察與市場解讀。<br />產品以「趨勢佐證」的角度被看見，每件入選品項，都是市場風向與消費指標。
         </p>
         <div class="hero-dates">
           <span>報名｜即日起至 <strong>2026.06.30</strong></span>
-          <span style="margin-left: 2.5em"
-            >頒獎典禮｜<strong>2026.10.05</strong></span
-          >
+          <span>頒獎典禮｜<strong>2026.10.05</strong></span>
         </div>
         <a
           href="/beautyawards/registration/form"
           class="btn btn-primary btn-lg hero-cta-wrap"
+          id="heroCta"
           style="margin-top: 40px"
-          >前往報名 <span class="arrow">→</span></a
+          ><span class="cta-label">前往報名</span><span class="arrow">→</span></a
         >
       </div>
     </header>
@@ -185,7 +177,7 @@
             font-family: &quot;Inter&quot;, sans-serif;
             font-size: 22px;
             letter-spacing: 0.18em;
-            font-weight: 700;
+            font-weight: 400;
             color: rgba(255, 255, 255, 0.6);
           "
         >
@@ -382,10 +374,10 @@
     <!-- CTA -->
     <section class="cta">
       <div class="cta-inner">
-        <div class="cta-eyebrow">Registration　·　Now Open</div>
+        <div class="cta-eyebrow" id="ctaEyebrow">Registration　·　Now Open</div>
         <div class="cta-date">06.30</div>
-        <div class="cta-date-label">報名截止日期</div>
-        <p class="cta-tc">
+        <div class="cta-date-label" id="ctaDateLabel">報名截止日期</div>
+        <p class="cta-tc" id="ctaBody">
           把你的產品交給女人我最大賞，<br />由我們替它寫進今年的趨勢裡。
         </p>
       </div>
@@ -421,12 +413,12 @@
         {
           letter: "N · NOBLE",
           tc: "永續信念",
-          desc: "永續不再只是公關語言，而是一種被選擇的生活方式。可補充包裝與透明機制，逐漸成為品牌核心，也讓正確消費轉化為一種身份表達。",
+          desc: "永續不只是理念，而是一種被選擇的生活方式。可補充包裝與透明機制，逐漸成為品牌核心，也讓正確消費轉化為一種身份表達。",
         },
         {
           letter: "F · FORTIFY",
           tc: "防禦修護",
-          desc: "診間療程與居家保養之間，正形成穩定循環。術後護理成為日常延伸，療癒感與儀式感，也逐漸成為選品時的重要標準。",
+          desc: "診間療程與居家保養之間，正逐步形成穩定循環。術後保養不僅著重於防禦與修護，更強調延續醫美療程效果，成為當前保養趨勢主流。",
         },
         {
           letter: "U · UNIQUE",
@@ -474,6 +466,44 @@
           el.addEventListener("mouseenter", () => setPetal(+el.dataset.petal));
         });
 
+      // Init: default to U · Unfiltered (so SVG petal + letter show active state on load)
+      setPetal(0);
+
+      // ---- Registration deadline (single source of truth) ----
+      // Registration closes 2026-06-30 23:59:59 (+08:00); treat 7/1 00:00 as the cutoff
+      const REGISTRATION_CUTOFF = new Date("2026-07-01T00:00:00+08:00");
+      // Debug override via URL: ?debug=closed forces closed state, ?debug=open forces open
+      const DEBUG_OVERRIDE = new URLSearchParams(window.location.search).get("debug");
+      const isRegistrationClosed = () => {
+        if (DEBUG_OVERRIDE === "closed") return true;
+        if (DEBUG_OVERRIDE === "open") return false;
+        return new Date() >= REGISTRATION_CUTOFF;
+      };
+
+      // Switch hero CTA + bottom CTA section to closed state after deadline
+      function applyClosedState() {
+        if (!isRegistrationClosed()) return;
+
+        const heroCta = document.getElementById("heroCta");
+        if (heroCta) {
+          heroCta.classList.add("is-closed");
+          heroCta.removeAttribute("href");
+          heroCta.setAttribute("aria-disabled", "true");
+          const label = heroCta.querySelector(".cta-label");
+          if (label) label.textContent = "報名已截止";
+        }
+
+        const eyebrow = document.getElementById("ctaEyebrow");
+        if (eyebrow) eyebrow.textContent = "Registration　·　Closed";
+
+        const dateLabel = document.getElementById("ctaDateLabel");
+        if (dateLabel) dateLabel.textContent = "報名結束日期";
+
+        const body = document.getElementById("ctaBody");
+        if (body) body.innerHTML = "報名於 06.30 結束。<br />下一站，10.05 頒獎典禮。";
+      }
+      applyClosedState();
+
       // Timeline progress: update active node based on current date
       function updateTimeline() {
         const items = document.querySelectorAll(".tl-rail .tl-item");
@@ -481,13 +511,13 @@
 
         const now = new Date();
         let currentIndex;
-        if (now < new Date("2026-06-30T00:00:00+08:00"))
+        if (!isRegistrationClosed())
           currentIndex = 0; // 報名開放中
-        else if (now < new Date("2026-07-01T00:00:00+08:00"))
-          currentIndex = 1; // 報名截止
         else if (now < new Date("2026-09-20T00:00:00+08:00"))
-          currentIndex = 2; // 專業精選
+          currentIndex = 1; // 報名截止
         else if (now < new Date("2026-10-05T00:00:00+08:00"))
+          currentIndex = 2; // 專業精選
+        else if (now < new Date("2026-10-06T00:00:00+08:00"))
           currentIndex = 3; // 美妝年度趨勢揭曉
         else currentIndex = 4; // 美妝年度盛典
 
@@ -500,12 +530,26 @@
           const flag = item.querySelector(".now-flag");
           if (flag) flag.style.display = i === currentIndex ? "" : "none";
         });
+
+        // Progress line extends to the NEXT milestone (the one in progress).
+        // 5 nodes at positions 10%, 30%, 50%, 70%, 90% → progress widths 20/40/60/80%.
+        // Cap at 80% (Oct 5 is the final node — nothing to "look forward to" beyond it).
+        const rail = document.querySelector(".tl-rail");
+        if (rail) {
+          const progress = Math.min((currentIndex + 1) * 20, 80);
+          rail.style.setProperty("--tl-progress", progress + "%");
+        }
       }
       updateTimeline();
 
       const sticky = document.getElementById("stickyCta");
       const hero = document.querySelector(".hero");
       function updateSticky() {
+        if (isRegistrationClosed()) {
+          sticky.classList.remove("show");
+          sticky.style.display = "none";
+          return;
+        }
         const heroBottom = hero ? hero.getBoundingClientRect().bottom : 0;
         sticky.classList.toggle("show", heroBottom < 0);
       }
