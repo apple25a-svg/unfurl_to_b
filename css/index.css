@@ -50,29 +50,25 @@
       font-size: 18px; font-weight: 600; letter-spacing: 0.12em;
       color: var(--brown);
     }
-    .nav-links { display: flex; gap: 36px; align-items: center; font-size: 18px; font-weight: 500; letter-spacing: 0.06em; }
-    .nav-links a { color: var(--ink-soft); transition: color .2s; }
-    .nav-links a:hover { color: var(--brown); }
-    .nav-cta {
-      font-family: "Noto Sans TC", "Inter", sans-serif;
-      font-size: 16px; font-weight: 600; letter-spacing: 0.08em;
-      padding: 11px 22px; border-radius: 999px;
-      background: var(--ink); color: #fff !important;
-      border: 1.5px solid var(--ink);
-      transition: all .2s;
-    }
-    .nav-cta:hover { background: var(--brown); border-color: var(--brown); color: #fff !important; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; font-family: "Noto Sans TC", "Inter", sans-serif; font-size: 18px; font-weight: 600; letter-spacing: 0.08em; padding: 14px 28px; border-radius: 999px; transition: all .2s; cursor: pointer; border: 1.5px solid transparent; }
     .btn-primary { background: var(--ink); color: #fff; border-color: var(--ink); }
     .btn-primary:hover { background: var(--brown); border-color: var(--brown); }
-    .btn-secondary { background: transparent; color: var(--ink); border-color: var(--ink); }
-    .btn-secondary:hover { background: var(--ink); color: #fff; }
-    .btn-accent { background: var(--ink); color: #fff !important; border-color: var(--ink); }
-    .btn-accent:hover { background: var(--brown); border-color: var(--brown); }
-    .btn-pink { background: var(--pink-bg); color: var(--ink); border-color: var(--pink-bg); }
-    .btn-pink:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
     .btn-lg { font-size: 20px; padding: 18px 36px; }
     .btn .arrow { font-family: "Inter", sans-serif; font-size: 20px; font-weight: 500; }
+    /* Closed state — registration period ended (after 2026-06-30 23:59:59 +08:00)
+       Visual: downgrade from "primary CTA" to "status indicator" — outlined ghost,
+       sits quietly in the layout without competing for attention */
+    .btn.is-closed,
+    .btn.is-closed:hover {
+      background: transparent;
+      border-color: rgba(24, 24, 27, 0.18);
+      color: rgba(24, 24, 27, 0.48);
+      cursor: not-allowed;
+      pointer-events: none;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+    }
+    .btn.is-closed .arrow { display: none; }
 
     /* ─── HERO ─── */
     .hero {
@@ -125,96 +121,23 @@
       flex-direction: column;
       align-items: center;
     }
-    .hero-divider {
-      width: 48px;
-      height: 1px;
-      background: rgba(62,49,44,0.25);
-      margin: 36px auto 36px;
-    }
     .hero-manifesto-title {
       font-family: "Noto Serif TC", serif;
-      font-size: 26px;
+      font-size: 64px;
       font-weight: 700;
       color: var(--brown);
       line-height: 1.7;
       letter-spacing: 0.06em;
-      margin-bottom: 24px;
+      margin-bottom: 8px;
     }
     .hero-manifesto-body {
       font-family: "Noto Sans TC", sans-serif;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 500;
       color: var(--ink-soft);
       line-height: 2.1;
       letter-spacing: 0.05em;
     }
-    @keyframes glow-breathe {
-      0%, 100% {
-        text-shadow:
-          0 0 60px rgba(255,255,255,0.30),
-          0 0 140px rgba(255,210,180,0.18);
-      }
-      50% {
-        text-shadow:
-          0 0 90px rgba(255,255,255,0.50),
-          0 0 200px rgba(255,200,160,0.28),
-          0 0 320px rgba(255,180,140,0.12);
-      }
-    }
-    .hero-title {
-      font-family: "Bodoni Moda", "Didot", "Georgia", serif;
-      font-style: italic;
-      font-size: 120px; font-weight: 400;
-      line-height: 0.88;
-      letter-spacing: -0.03em;
-      color: var(--brown);
-      text-transform: uppercase;
-    }
-    .hero-title em {
-      font-style: italic;
-      font-weight: 400;
-      color: var(--brown);
-    }
-    .hero-tc {
-      font-family: "Noto Serif TC", serif;
-      font-size: 44px; font-weight: 700;
-      letter-spacing: 0.08em;
-      color: var(--brown);
-      margin-top: 0;
-      margin-bottom: 24px;
-      padding-left: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .hero-tc .year {
-      font-family: "Noto Serif TC", serif;
-      font-style: normal;
-      font-size: 44px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      color: var(--brown);
-    }
-    .hero-sub {
-      font-family: "Noto Sans TC", sans-serif;
-      font-size: 20px; font-weight: 500;
-      letter-spacing: 0.12em;
-      color: var(--ink-soft);
-      margin-top: 28px;
-    }
-    .hero-sub .accent { color: var(--ink); font-weight: 600; }
-    .hero-cta {
-      margin-top: 64px;
-      display: inline-flex; align-items: center; gap: 14px;
-      color: var(--ink);
-      padding: 18px 0;
-      font-size: 16px; letter-spacing: 0.18em; font-weight: 500;
-      border-bottom: 1px solid var(--ink);
-      transition: gap .2s, opacity .2s;
-    }
-    .hero-cta:hover { gap: 22px; }
-    .hero-cta .arrow { font-family: "Inter", sans-serif; font-size: 20px; font-weight: 400; }
 
     /* Hero date strip — moved from nav */
     .hero-dates {
@@ -235,37 +158,21 @@
       align-items: baseline;
       gap: 8px;
     }
+    .hero-dates span + span {
+      margin-left: 2.5em;
+    }
     .hero-dates strong {
       font-weight: 700;
       font-size: 20px;
       color: var(--brown);
       font-family: "Inter", sans-serif;
     }
-    .hero-dates-sep {
-      width: 20px;
-      height: 1px;
-      background: rgba(62,49,44,0.3);
-      display: inline-block;
-    }
 
 
 
     /* ─── COMMON ─── */
     .container { max-width: 1200px; margin: 0 auto; padding: 0 64px; }
-    .container-wide { max-width: 1320px; margin: 0 auto; padding: 0 64px; }
     .sec { padding: 160px 0; position: relative; }
-    /* Subtle warm bloom — manifesto section */
-    #about::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 55% 70% at -5% 50%, rgba(242,224,178,0.22) 0%, transparent 65%),
-        radial-gradient(ellipse 40% 50% at 105% 20%, rgba(238,216,196,0.18) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    #about .container { position: relative; z-index: 1; }
 
     .sec-num {
       font-family: "Inter", sans-serif;
@@ -301,43 +208,6 @@
       letter-spacing: 0.04em;
       line-height: 1.35;
       color: var(--brown);
-    }
-
-    /* ─── MANIFESTO ─── */
-    .manifesto-grid {
-      display: block;
-      margin-top: 64px;
-      max-width: 760px;
-    }
-    .manifesto-quote {
-      font-family: "Noto Sans TC", sans-serif;
-      font-size: 30px; font-weight: 600;
-      line-height: 1.55;
-      color: var(--brown);
-      letter-spacing: 0.04em;
-    }
-    .manifesto-quote-tc {
-      font-family: "Noto Sans TC", sans-serif;
-      font-size: 20px;
-      color: var(--muted);
-      margin-top: 32px;
-      line-height: 1.9;
-      letter-spacing: 0.04em;
-      font-weight: 500;
-    }
-    .manifesto-body p {
-      font-size: 22px;
-      line-height: 2.0;
-      color: var(--ink-soft);
-      margin-bottom: 28px;
-      font-weight: 500;
-    }
-    .manifesto-body p.lead {
-      font-size: 26px;
-      color: var(--ink);
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      line-height: 1.5;
     }
 
     /* ─── BLOOM DIAGRAM ─── */
@@ -426,14 +296,6 @@
       color: var(--brown); margin-bottom: 14px;
       letter-spacing: 0.04em;
     }
-    .bloom-info-en {
-      font-family: "Inter", sans-serif;
-      font-weight: 500;
-      font-size: 22px;
-      color: var(--brown);
-      margin-bottom: 32px;
-      letter-spacing: 0.02em;
-    }
     .bloom-info-desc {
       font-size: 20px;
       line-height: 1.95;
@@ -441,17 +303,6 @@
       margin-bottom: 32px;
       font-weight: 500;
     }
-    .bloom-info-tag {
-      display: inline-flex; align-items: center; gap: 12px;
-      font-size: 18px; letter-spacing: 0.1em;
-      color: var(--muted);
-      font-weight: 500;
-    }
-    .bloom-info-tag strong {
-      font-weight: 700;
-      color: var(--ink);
-    }
-    .bloom-info-tag .bar { width: 24px; height: 1px; background: var(--line); }
 
     .bloom-list {
       max-width: 1200px; margin: 88px auto 0;
@@ -510,6 +361,8 @@
     .tl-rail {
       display: grid; grid-template-columns: repeat(5, 1fr);
       position: relative;
+      /* Progress line width — JS sets this based on current milestone */
+      --tl-progress: 20%;
     }
     .tl-rail::before {
       content: '';
@@ -521,9 +374,11 @@
     .tl-rail::after {
       content: '';
       position: absolute;
-      top: 24px; left: 10%; width: 12%;
+      top: 24px; left: 10%;
+      width: var(--tl-progress);
       height: 1px;
       background: var(--ink);
+      transition: width 0.6s ease;
     }
     .tl-item {
       position: relative; padding: 0 16px;
@@ -595,120 +450,6 @@
       letter-spacing: 0.03em;
     }
 
-    /* ─── PROCESS ─── */
-    .process { padding: 160px 0; background: var(--bg-warm); }
-    .process-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      margin-top: 88px;
-      border-top: 1px solid var(--line);
-    }
-    .process-step {
-      padding: 48px 36px;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      position: relative;
-      background: transparent;
-    }
-    .process-step:last-child { border-right: 0; }
-    .step-num {
-      font-family: "Inter", sans-serif;
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--brown);
-      letter-spacing: 0.18em;
-      margin-bottom: 24px;
-    }
-    .step-title {
-      font-family: "Noto Sans TC", sans-serif;
-      font-size: 24px; font-weight: 700;
-      color: var(--brown); margin-bottom: 16px;
-      letter-spacing: 0.04em;
-    }
-    .step-desc {
-      font-size: 20px; color: var(--ink-soft);
-      line-height: 1.85; font-weight: 500;
-    }
-
-    /* ─── RULES + FAQ ─── */
-    .rules { padding: 160px 0; }
-    .rules-wrap {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 96px;
-      margin-top: 88px;
-    }
-    .col-title {
-      font-family: "Inter", sans-serif;
-      font-size: 14px; font-weight: 700;
-      letter-spacing: 0.26em;
-      color: var(--brown);
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--ink);
-      margin-bottom: 16px;
-      text-transform: uppercase;
-    }
-    .rule-line {
-      display: grid; grid-template-columns: 36px 1fr;
-      gap: 20px;
-      padding: 28px 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .rule-line:last-child { border-bottom: 0; }
-    .rule-line .num {
-      font-family: "Inter", sans-serif;
-      font-size: 20px;
-      color: var(--brown);
-      font-weight: 700;
-    }
-    .rule-line .body strong {
-      display: block;
-      font-family: "Noto Sans TC", sans-serif;
-      font-size: 22px; font-weight: 700;
-      color: var(--brown);
-      margin-bottom: 10px;
-      letter-spacing: 0.04em;
-    }
-    .rule-line .body p {
-      font-size: 20px; color: var(--ink-soft); line-height: 1.85;
-      font-weight: 500;
-    }
-
-    .faq-item { border-bottom: 1px solid var(--line); }
-    .faq-q {
-      width: 100%;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 28px 0;
-      font-family: "Noto Sans TC", sans-serif;
-      font-size: 20px; font-weight: 600;
-      color: var(--brown);
-      background: none; border: none;
-      cursor: pointer;
-      text-align: left;
-      letter-spacing: 0.04em;
-      gap: 24px;
-    }
-    .faq-q .plus {
-      font-family: "Inter", sans-serif;
-      font-weight: 400;
-      font-size: 26px;
-      color: var(--brown);
-      transition: transform .3s;
-      flex-shrink: 0;
-    }
-    .faq-item.open .faq-q { color: var(--brown); }
-    .faq-item.open .faq-q .plus { transform: rotate(45deg); }
-    .faq-a {
-      max-height: 0; overflow: hidden;
-      transition: max-height .35s ease, padding .25s;
-      font-size: 20px; color: var(--ink-soft);
-      line-height: 1.9; font-weight: 500;
-      letter-spacing: 0.02em;
-    }
-    .faq-item.open .faq-a {
-      max-height: 320px;
-      padding: 0 0 28px;
-    }
-
     /* ─── CTA ─── */
     .cta {
       padding: 160px 64px;
@@ -734,14 +475,6 @@
         rgba(30,20,15,0.38) 0%,
         rgba(30,20,15,0.10) 100%);
       z-index: 1;
-      pointer-events: none;
-    }
-    .cta-motif {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 800px;
-      opacity: 0.05;
       pointer-events: none;
     }
     .cta-inner { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
@@ -770,19 +503,6 @@
       color: rgba(255,255,255,0.55);
       margin-bottom: 44px;
     }
-    .cta-title {
-      font-family: "Inter", sans-serif;
-      font-size: 104px; font-weight: 300;
-      line-height: 1.05;
-      color: #fff;
-      margin-bottom: 40px;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
-    }
-    .cta-title em {
-      font-style: normal;
-      color: var(--brown);
-    }
     .cta-tc {
       font-family: "Noto Sans TC", sans-serif;
       font-size: 18px; font-weight: 400;
@@ -790,14 +510,6 @@
       line-height: 1.9;
       margin-bottom: 52px;
       letter-spacing: 0.08em;
-    }
-    .btn-cta .arrow { font-family: "Inter", sans-serif; font-size: 20px; font-weight: 400; }
-    .cta-deadline {
-      margin-top: 40px;
-      font-family: "Inter", sans-serif;
-      font-size: 16px; letter-spacing: 0.22em;
-      color: rgba(255,255,255,0.55);
-      font-weight: 600;
     }
 
 
@@ -868,11 +580,7 @@
       font-family: "Noto Serif TC", serif;
       color: #fff;
     }
-    .bloom-info-en { color: rgba(255,255,255,0.75); }
     .bloom-info-desc { color: rgba(255,255,255,0.82); }
-    .bloom-info-tag { color: rgba(255,255,255,0.55); }
-    .bloom-info-tag strong { color: #fff; }
-    .bloom-info-tag .bar { background: rgba(255,255,255,0.3); }
     /* SVG petal paths — white strokes */
     .bloom-svg .petal-path { stroke: rgba(255,255,255,0.35); }
     .bloom-svg .petal-path:hover,
@@ -903,35 +611,25 @@
     @media (max-width: 767px) {
       /* NAV */
       nav { padding: 0 20px; height: 64px; }
-      .nav-links { display: none; }
-      .nav-dates { display: none; }
-      .nav-logo .tc { font-size: 12px; margin-left: 10px; padding-left: 10px; }
-      .nav-cta { font-size: 12px; padding: 8px 16px; letter-spacing: 0.06em; }
 
       /* HERO */
       .hero { padding: 96px 20px 64px; min-height: auto; background-image: url("../images/hero-mobile-alt.jpg"); }
       .hero-content { max-width: 100%; }
 
-      /* TC title first */
-      .hero-tc { font-size: 32px; margin-top: 0; margin-bottom: 16px; gap: 8px; }
-      .hero-tc .year { font-size: 32px; }
+      .hero-manifesto-title { font-size: 48px; line-height: 1.6; margin-bottom: 4px; }
+      .hero-manifesto-body { font-size: 16px; line-height: 1.9; align-self: stretch; text-align: left; }
+      .hero-manifesto-body br { display: none; }
 
-      /* UNFURL second */
-      .hero-title { font-size: 64px; line-height: 0.95; }
-
-      .hero-divider { margin: 24px auto; }
-      .hero-manifesto-title { font-size: 20px; line-height: 1.6; margin-bottom: 16px; }
-      .hero-manifesto-body { font-size: 16px; line-height: 1.9; }
-
-      /* Date strip — stacked vertically in hero */
+      /* Date strip — stacked vertically in hero, left-aligned */
       .hero-dates {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+        align-self: stretch;
         gap: 8px;
         margin-top: 32px;
         font-size: 16px;
       }
-      .hero-dates .hero-dates-sep { display: none; }
+      .hero-dates span + span { margin-left: 0; }
       .hero-dates strong { font-size: 16px; }
 
       /* Hero CTA button (glass style) */
@@ -943,19 +641,11 @@
 
       /* COMMON SECTION */
       .container { padding: 0 20px; }
-      .container-wide { padding: 0 20px; }
       .sec { padding: 80px 0; }
       .sec-num { font-size: 12px; margin-bottom: 24px; }
       .sec-title { font-size: 36px; line-height: 1.15; }
       .sec-title.zh-primary { font-size: 32px; line-height: 1.4; }
       .sec-title-tc { font-size: 20px; margin-top: 16px; }
-
-      /* MANIFESTO */
-      .manifesto-grid { margin-top: 40px; max-width: 100%; }
-      .manifesto-quote { font-size: 24px; line-height: 1.6; }
-      .manifesto-quote-tc { font-size: 16px; margin-top: 24px; line-height: 1.8; }
-      .manifesto-body p { font-size: 16px; line-height: 1.9; margin-bottom: 20px; }
-      .manifesto-body p.lead { font-size: 20px; line-height: 1.55; }
 
       /* BLOOM SECTION */
       .bloom-section { padding: 80px 0; }
@@ -966,14 +656,11 @@
         gap: 36px;
         margin-top: 40px;
       }
-      .bloom-svg-wrap { order: 1; }
       .bloom-info { order: 2; text-align: center; max-width: 100%; }
       .bloom-svg { width: 280px; height: 280px; flex-shrink: 0; }
-      .bloom-info-letter { font-size: 12px; letter-spacing: 0.22em; margin-bottom: 8px; }
-      .bloom-info-title { font-size: 24px; margin-bottom: 12px; }
-      .bloom-info-en { font-size: 16px; margin-bottom: 20px; }
-      .bloom-info-desc { font-size: 16px; line-height: 1.85; margin-bottom: 24px; }
-      .bloom-info-tag { font-size: 16px; justify-content: center; }
+      .bloom-info-letter { font-size: 16px; letter-spacing: 0.22em; margin-bottom: 8px; }
+      .bloom-info-title { font-size: 32px; margin-bottom: 12px; }
+      .bloom-info-desc { font-size: 16px; line-height: 1.85; margin-bottom: 24px; text-align: left; }
 
       /* BLOOM PILL LIST — 3 cols × 2 rows */
       .bloom-list {
@@ -1022,7 +709,8 @@
         top: 8px;
         left: 8px;
         width: 1px;
-        height: 60px;
+        height: var(--tl-progress);
+        transition: height 0.6s ease;
       }
       .tl-item {
         display: flex;
@@ -1070,10 +758,7 @@
       .cta-eyebrow { font-size: 12px; margin-bottom: 28px; letter-spacing: 0.3em; }
       .cta-date { font-size: 72px; line-height: 0.9; }
       .cta-date-label { font-size: 12px; margin-bottom: 32px; letter-spacing: 0.22em; }
-      .cta-title { font-size: 56px; line-height: 1.05; margin-bottom: 28px; }
       .cta-tc { font-size: 16px; line-height: 1.85; margin-bottom: 36px; }
-      .btn-cta { font-size: 16px; padding: 16px 32px; }
-      .btn-cta .arrow { font-size: 16px; }
 
       /* STICKY CTA */
       .sticky-cta {
@@ -1082,9 +767,4 @@
         padding: 12px 24px;
         gap: 8px;
       }
-
-      /* PROCESS section (if visible on this page) */
-      .process { padding: 80px 0; }
-      .process-grid { grid-template-columns: 1fr; margin-top: 40px; }
-      .process-step { padding: 28px 20px; border-right: 0 !important; }
     }
