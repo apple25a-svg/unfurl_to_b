@@ -77,7 +77,7 @@
       display: flex; align-items: center; justify-content: center;
       padding: 100px 48px 64px;
       background-color: #e8eef0;
-      background-image: url("../images/hero-desktop.jpg");
+      background-image: url("/beautyawards/registration/images/hero-desktop.jpg");
       background-size: cover;
       background-position: center center;
     }
@@ -85,11 +85,11 @@
       }
     
     @media (max-width: 768px) {
-      .hero { background-image: url("../images/hero-tablet.jpg"); background-size: cover; background-position: center; }
+      .hero { background-image: url("/beautyawards/registration/images/hero-tablet.jpg"); background-size: cover; background-position: center; }
     }
 
     @media (max-width: 480px) {
-      .hero { background-image: url("../images/hero-mobile.jpg"); background-size: cover; background-position: center; }
+      .hero { background-image: url("/beautyawards/registration/images/hero-mobile.jpg"); background-size: cover; background-position: center; }
     }
     @media (max-width: 767px) {
       .hero {
@@ -218,16 +218,16 @@
     .bloom-section {
       padding: 160px 0;
       background-color: #e8b0b0;
-      background-image: url("../images/bloom-desktop.jpg");
+      background-image: url("/beautyawards/registration/images/bloom-desktop.jpg");
       background-size: cover;
       background-position: center center;
       position: relative;
     }
     @media (max-width: 1199px) {
-      .bloom-section { background-image: url("../images/bloom-tablet.jpg"); }
+      .bloom-section { background-image: url("/beautyawards/registration/images/bloom-tablet.jpg"); }
     }
     @media (max-width: 767px) {
-      .bloom-section { background-image: url("../images/bloom-mobile.jpg"); background-position: center top; }
+      .bloom-section { background-image: url("/beautyawards/registration/images/bloom-mobile.jpg"); background-position: center top; }
     }
     /* Dark overlay for text readability */
     .bloom-section::before {
@@ -459,17 +459,17 @@
       padding: 160px 64px;
       text-align: center;
       background-color: #c8a060;
-      background-image: url("../images/cta-desktop.jpg");
+      background-image: url("/beautyawards/registration/images/cta-desktop.jpg");
       background-size: cover;
       background-position: center center;
       color: #fff;
       position: relative; overflow: hidden;
     }
     @media (max-width: 1199px) {
-      .cta { background-image: url("../images/cta-tablet.jpg"); padding: 120px 40px; }
+      .cta { background-image: url("/beautyawards/registration/images/cta-tablet.jpg"); padding: 120px 40px; }
     }
     @media (max-width: 767px) {
-      .cta { background-image: url("../images/cta-mobile.jpg"); background-position: center top; padding: 100px 28px; }
+      .cta { background-image: url("/beautyawards/registration/images/cta-mobile.jpg"); background-position: center top; padding: 100px 28px; }
     }
     .cta::before {
       content: '';
@@ -628,7 +628,7 @@
       nav { padding: 0 20px; height: 64px; }
 
       /* HERO */
-      .hero { padding: 96px 20px 64px; min-height: auto; background-image: url("../images/hero-mobile-alt.jpg"); }
+      .hero { padding: 96px 20px 64px; min-height: auto; background-image: url("/beautyawards/registration/images/hero-mobile-alt.jpg"); }
       .hero-content { max-width: 100%; }
 
       .hero-manifesto-title { font-size: 48px; line-height: 1.6; margin-bottom: 32px; }
