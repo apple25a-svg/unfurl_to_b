@@ -247,31 +247,57 @@
     }
 
     /* ─── RADIO & CHECKBOX ─── */
-    .radio-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    .choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
       margin-top: 6px;
     }
-    .choice-pill {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.85rem;
-      color: var(--ink-soft);
+    .choice-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      column-gap: 10px;
+      row-gap: 4px;
+      align-content: start;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
       cursor: pointer;
       user-select: none;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
     }
-    .choice-pill:has(input:checked) {
-      color: var(--ds-brown);
-      font-weight: 500;
+    .choice-card:hover { border-color: var(--muted); }
+    .choice-card:has(input:checked) {
+      border-color: var(--ds-accent);
+      background: var(--ds-pink-bg);
     }
-    .choice-pill input {
-      width: 14px;
-      height: 14px;
-      accent-color: var(--rose-mid);
+    .choice-card input {
+      grid-column: 1;
+      grid-row: 1;
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      accent-color: var(--ds-accent);
       cursor: pointer;
       flex-shrink: 0;
+    }
+    .choice-card-title {
+      grid-column: 2;
+      grid-row: 1;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .choice-card:has(input:checked) .choice-card-title { color: var(--ds-accent); }
+    .choice-card-desc {
+      grid-column: 2;
+      grid-row: 2;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.6;
     }
 
     /* ─── NEW PRODUCT RADIO ─── */
@@ -391,9 +417,6 @@
     }
     .field-hint { font-size: 12px; margin-top: 6px; }
     .char-count { font-size: 15px; }
-    .choice-pill { font-size: 17px; padding: 10px 18px; gap: 8px; }
-    .choice-pill input { width: 16px; height: 16px; accent-color: var(--ds-accent); }
-
     .bool-pill { font-size: 18px; padding: 14px 20px; border-radius: 999px; gap: 10px; }
     .bool-pill input { accent-color: var(--ds-accent); }
 
@@ -542,7 +565,7 @@
       border-color: #E0364A !important;
       box-shadow: 0 0 0 3px rgba(224,54,74,0.08) !important;
     }
-    .field-error .radio-group .choice-pill,
+    .field-error .choice-grid .choice-card,
     .field-error .bool-group .bool-pill {
       border-color: #E0364A;
     }
@@ -695,7 +718,9 @@
       label.field-label { font-size: 13px; }
       .field-hint { font-size: 11px; }
       .form-required-note { font-size: 12px; }
-      .radio-group, .bool-group { gap: 8px; }
+      .bool-group { gap: 8px; }
+      .choice-grid { grid-template-columns: 1fr; gap: 10px; }
+      .choice-card { padding: 14px 16px; }
       .btn-primary { padding: 14px 32px; font-size: 15px; width: 100%; }
       .btn-ghost { padding: 14px 32px; font-size: 15px; width: 100%; }
       .form-note { font-size: 11px; }

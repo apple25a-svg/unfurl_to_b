@@ -128,7 +128,7 @@
       color: var(--brown);
       line-height: 1.7;
       letter-spacing: 0.06em;
-      margin-bottom: 8px;
+      margin-bottom: 32px;
     }
     .hero-manifesto-body {
       font-family: "Noto Sans TC", sans-serif;
@@ -168,6 +168,11 @@
       font-family: "Inter", sans-serif;
     }
 
+    /* Hero CTA spacing (desktop) — mobile override sits in the ≤767px block */
+    .hero-cta-wrap {
+      margin-top: 48px;
+    }
+
 
 
     /* ─── COMMON ─── */
@@ -195,10 +200,9 @@
       color: var(--brown);
     }
     .sec-title-tc {
-      font-family: "Noto Sans TC", sans-serif;
-      font-size: 32px; font-weight: 600;
-      color: var(--brown);
-      letter-spacing: 0.12em;
+      font-family: "Inter", sans-serif;
+      font-size: 24px; font-weight: 400;
+      letter-spacing: 0.18em;
       margin-top: 20px;
       line-height: 1.3;
     }
@@ -512,6 +516,17 @@
       letter-spacing: 0.08em;
     }
 
+    /* ─── FOOTER ─── */
+    .site-footer {
+      text-align: center;
+      padding: 24px 16px;
+      font-family: "Inter", sans-serif;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.04em;
+      background: #3E312C;
+    }
+
 
     /* ─── FLOATING CTA ─── */
     .sticky-cta {
@@ -574,7 +589,7 @@
     .bloom-section .sec-num { color: rgba(255,255,255,0.55); }
     .bloom-section .sec-title { color: #fff; }
     .bloom-section .sec-title em { color: rgba(255,255,255,0.75); }
-    .bloom-section .sec-title-tc { color: rgba(255,255,255,0.7); }
+    .bloom-section .sec-title-tc { color: rgba(255,255,255,0.6); }
     .bloom-info-letter { color: rgba(255,255,255,0.6); }
     .bloom-info-title {
       font-family: "Noto Serif TC", serif;
@@ -616,7 +631,7 @@
       .hero { padding: 96px 20px 64px; min-height: auto; background-image: url("../images/hero-mobile-alt.jpg"); }
       .hero-content { max-width: 100%; }
 
-      .hero-manifesto-title { font-size: 48px; line-height: 1.6; margin-bottom: 4px; }
+      .hero-manifesto-title { font-size: 48px; line-height: 1.6; margin-bottom: 32px; }
       .hero-manifesto-body { font-size: 16px; line-height: 1.9; align-self: stretch; text-align: left; }
       .hero-manifesto-body br { display: none; }
 
@@ -626,7 +641,7 @@
         align-items: flex-start;
         align-self: stretch;
         gap: 8px;
-        margin-top: 32px;
+        margin-top: 40px;
         font-size: 16px;
       }
       .hero-dates span + span { margin-left: 0; }
@@ -634,7 +649,7 @@
 
       /* Hero CTA button (glass style) */
       .hero-cta-wrap.btn {
-        margin-top: 32px !important;
+        margin-top: 48px !important;
         font-size: 16px !important;
         padding: 16px 32px !important;
       }
