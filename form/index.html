@@ -11,7 +11,7 @@
     <title>女人我最大賞報名表單</title>
     <meta
       name="description"
-      content="2026 女人我最大賞以「UNFURL」作為年度關鍵字，女人我最大編輯部、達人與醫師團隊，從評審試用昇華為年度趨勢觀察，讓所有入選商品重新詮釋美的趨勢與市場動向。報名時間為即日起至2026年6月30日23:59截止。"
+      content="2026女人我最大全新企劃UNFURL六大年度關鍵字，邀請品牌共襄盛舉，共同詮釋當代美的趨勢。報名時間即日起至2026年6月30日23:59截止。"
     />
     <link
       rel="image_src"
@@ -25,7 +25,7 @@
     <meta property="og:title" content="女人我最大賞線上報名" />
     <meta
       property="og:description"
-      content="2026 女人我最大賞以「UNFURL」作為年度關鍵字，女人我最大編輯部、達人與醫師團隊，從評審試用昇華為年度趨勢觀察，讓所有入選商品重新詮釋美的趨勢與市場動向。報名時間為即日起至2026年6月30日23:59截止。"
+      content="2026女人我最大全新企劃UNFURL六大年度關鍵字，邀請品牌共襄盛舉，共同詮釋當代美的趨勢。報名時間即日起至2026年6月30日23:59截止。"
     />
     <meta
       property="og:image"
@@ -414,14 +414,41 @@
         <div class="section">
           <div class="field">
             <label class="field-label">請選擇最推特點 <span class="req">*</span> <span class="opt">可複選</span></label>
-            <div class="radio-group">
-              <label class="choice-pill"><input type="checkbox" name="best_feature_${uid}" value="健康保養"> 健康保養</label>
-              <label class="choice-pill"><input type="checkbox" name="best_feature_${uid}" value="永續信念"> 永續信念</label>
-              <label class="choice-pill"><input type="checkbox" name="best_feature_${uid}" value="防禦修護"> 防禦修護</label>
-              <label class="choice-pill"><input type="checkbox" name="best_feature_${uid}" value="頂級珍稀"> 頂級珍稀</label>
-              <label class="choice-pill"><input type="checkbox" name="best_feature_${uid}" value="療癒儀式"> 療癒儀式</label>
-              <label class="choice-pill"><input type="checkbox" name="best_feature_${uid}" value="醫美共生"> 醫美共生</label>
-              <label class="choice-pill"><input type="checkbox" name="best_feature_${uid}" value="其它"> 其它</label>
+            <div class="choice-grid">
+              <label class="choice-card">
+                <input type="checkbox" name="best_feature_${uid}" value="健康保養">
+                <span class="choice-card-title">健康保養</span>
+                <span class="choice-card-desc">膠原蛋白與玻尿酸等口服飲，由內而外喝出彈潤透亮肌。</span>
+              </label>
+              <label class="choice-card">
+                <input type="checkbox" name="best_feature_${uid}" value="永續信念">
+                <span class="choice-card-title">永續信念</span>
+                <span class="choice-card-desc">可驗證低碳足跡與生物多樣性美妝，與地球共築純淨未來。</span>
+              </label>
+              <label class="choice-card">
+                <input type="checkbox" name="best_feature_${uid}" value="防禦修護">
+                <span class="choice-card-title">防禦修護</span>
+                <span class="choice-card-desc">專為醫美後設計的居家防禦修護，延續並加乘療程效果。</span>
+              </label>
+              <label class="choice-card">
+                <input type="checkbox" name="best_feature_${uid}" value="頂級珍稀">
+                <span class="choice-card-title">頂級珍稀</span>
+                <span class="choice-card-desc">諾貝爾獎科學、珍稀植物海洋成分、昂貴萃取法，極致奢寵。</span>
+              </label>
+              <label class="choice-card">
+                <input type="checkbox" name="best_feature_${uid}" value="療癒儀式">
+                <span class="choice-card-title">療癒儀式</span>
+                <span class="choice-card-desc">夜間睡眠與放鬆品項，用療癒香氛與質地開啟身心舒壓儀式。</span>
+              </label>
+              <label class="choice-card">
+                <input type="checkbox" name="best_feature_${uid}" value="醫美共生">
+                <span class="choice-card-title">醫美共生</span>
+                <span class="choice-card-desc">專業醫美療程或尖端儀器，提供更有感的高效保養效果。</span>
+              </label>
+              <label class="choice-card">
+                <input type="checkbox" name="best_feature_${uid}" value="其它">
+                <span class="choice-card-title">其它</span>
+              </label>
             </div>
           </div>
           <div class="field" style="margin-top:24px;">
@@ -808,7 +835,7 @@
           e.className = "error-msg";
           e.textContent = msg;
           const target = field.querySelector(
-            ".radio-group, .bool-group, textarea, select, input",
+            ".choice-grid, .bool-group, textarea, select, input",
           );
           if (target) target.after(e);
           else field.appendChild(e);
