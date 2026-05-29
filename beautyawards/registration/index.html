@@ -348,9 +348,7 @@
               <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
               <div class="tl-date">Oct 05</div>
               <div class="tl-title">美妝年度盛典</div>
-              <div class="tl-note" style="white-space: nowrap">
-                美妝趨勢發布 × 年度 Beauty Picks
-              </div>
+              <div class="tl-note">美妝趨勢發布 × 年度 Beauty Picks</div>
             </div>
           </div>
         </div>
@@ -511,14 +509,6 @@
           if (flag) flag.style.display = i === currentIndex ? "" : "none";
         });
 
-        // Progress line extends to the NEXT milestone (the one in progress).
-        // 5 nodes at positions 10%, 30%, 50%, 70%, 90% → progress widths 20/40/60/80%.
-        // Cap at 80% (Oct 5 is the final node — nothing to "look forward to" beyond it).
-        const rail = document.querySelector(".tl-rail");
-        if (rail) {
-          const progress = Math.min((currentIndex + 1) * 20, 80);
-          rail.style.setProperty("--tl-progress", progress + "%");
-        }
       }
       updateTimeline();
 
