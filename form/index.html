@@ -11,7 +11,7 @@
     <title>女人我最大賞報名表單</title>
     <meta
       name="description"
-      content="2026女人我最大全新企劃UNFURL六大年度關鍵字，邀請品牌共襄盛舉，共同詮釋當代美的趨勢。報名時間即日起至2026年6月30日23:59截止。"
+      content="2026 女人我最大賞以「UNFURL」作為年度關鍵字，女人我最大編輯部、達人與醫師團隊，從評審試用昇華為年度趨勢觀察，讓所有入選商品重新詮釋美的趨勢與市場動向。報名時間為即日起至2026年6月30日23:59截止。"
     />
     <link
       rel="image_src"
@@ -25,7 +25,7 @@
     <meta property="og:title" content="女人我最大賞線上報名" />
     <meta
       property="og:description"
-      content="2026女人我最大全新企劃UNFURL六大年度關鍵字，邀請品牌共襄盛舉，共同詮釋當代美的趨勢。報名時間即日起至2026年6月30日23:59截止。"
+      content="2026 女人我最大賞以「UNFURL」作為年度關鍵字，女人我最大編輯部、達人與醫師團隊，從評審試用昇華為年度趨勢觀察，讓所有入選商品重新詮釋美的趨勢與市場動向。報名時間為即日起至2026年6月30日23:59截止。"
     />
     <meta
       property="og:image"
@@ -236,7 +236,7 @@
     </div>
 
     <!-- CLOSED STATE — shown after 2026-06-30 23:59:59 (+08:00) -->
-    <div class="form-closed" id="formClosed" style="display: none;">
+    <div class="form-closed" id="formClosed" style="display: none">
       <div class="form-closed-eyebrow">Registration　·　Closed</div>
       <div class="form-closed-title">報名已於 06.30 結束</div>
       <p class="form-closed-body">
@@ -248,7 +248,7 @@
       </div>
       <br />
       <a href="/beautyawards" class="form-closed-back">
-        回到首頁 <span style="font-family: Inter, sans-serif;">→</span>
+        回到首頁 <span style="font-family: Inter, sans-serif">→</span>
       </a>
     </div>
 
@@ -327,7 +327,9 @@
       //  (must match index.html — same cutoff)
       // ═══════════════════════════════════════════
       const REGISTRATION_CUTOFF = new Date("2026-07-01T00:00:00+08:00");
-      const DEBUG_OVERRIDE = new URLSearchParams(window.location.search).get("debug");
+      const DEBUG_OVERRIDE = new URLSearchParams(window.location.search).get(
+        "debug",
+      );
       const isRegistrationClosed = () => {
         if (DEBUG_OVERRIDE === "closed") return true;
         if (DEBUG_OVERRIDE === "open") return false;
@@ -344,28 +346,27 @@
         if (bannerDates) bannerDates.innerHTML = "<span>報名期間已結束</span>";
         // Skip all form initialization below — nothing to wire up
       } else {
+        // ═══════════════════════════════════════════
+        //  CONSTANTS & STATE
+        // ═══════════════════════════════════════════
+        const API_URL =
+          "https://api.beautyawards.tvbs-testing.com.tw/vendors/api/v1/register";
+        // 正式站：const API_URL = 'https://api.beautyawards.tvbs.com.tw/vendors/api/v1/register';
 
-      // ═══════════════════════════════════════════
-      //  CONSTANTS & STATE
-      // ═══════════════════════════════════════════
-      const API_URL =
-        "https://api.beautyawards.tvbs-testing.com.tw/vendors/api/v1/register";
-      // 正式站：const API_URL = 'https://api.beautyawards.tvbs.com.tw/vendors/api/v1/register';
+        const MAX_PRODUCTS = 5;
+        const LS_KEY = "unfurl_form_2026";
+        let uidCounter = 0;
+        let products = []; // [{ uid, tab, card }]
 
-      const MAX_PRODUCTS = 5;
-      const LS_KEY = "unfurl_form_2026";
-      let uidCounter = 0;
-      let products = []; // [{ uid, tab, card }]
+        function genUid() {
+          return ++uidCounter;
+        }
 
-      function genUid() {
-        return ++uidCounter;
-      }
-
-      // ═══════════════════════════════════════════
-      //  PRODUCT CARD TEMPLATE
-      // ═══════════════════════════════════════════
-      function buildCardHTML(uid, position) {
-        return `
+        // ═══════════════════════════════════════════
+        //  PRODUCT CARD TEMPLATE
+        // ═══════════════════════════════════════════
+        function buildCardHTML(uid, position) {
+          return `
         <div class="section">
           <div class="section-header">
             <div class="section-title">產品資料 ${position}</div>
@@ -458,742 +459,762 @@
           </div>
         </div>
       `;
-      }
+        }
 
-      // ═══════════════════════════════════════════
-      //  CREATE PRODUCT CARD
-      // ═══════════════════════════════════════════
-      function createProductCard(uid, position) {
-        const card = document.createElement("div");
-        card.className = "product-card";
-        card.dataset.uid = uid;
-        card.innerHTML = buildCardHTML(uid, position);
+        // ═══════════════════════════════════════════
+        //  CREATE PRODUCT CARD
+        // ═══════════════════════════════════════════
+        function createProductCard(uid, position) {
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.dataset.uid = uid;
+          card.innerHTML = buildCardHTML(uid, position);
 
-        // Char counters
-        card.querySelectorAll("textarea").forEach((ta) => {
-          const max = ta.getAttribute("maxlength");
-          const counter = ta.nextElementSibling;
-          if (counter?.classList.contains("char-count")) {
-            ta.addEventListener("input", () => {
-              counter.textContent = `${ta.value.length} / ${max}`;
-              counter.style.color =
-                ta.value.length > max * 0.9 ? "#2a201c" : "#ccc";
-            });
-          }
-        });
+          // Char counters
+          card.querySelectorAll("textarea").forEach((ta) => {
+            const max = ta.getAttribute("maxlength");
+            const counter = ta.nextElementSibling;
+            if (counter?.classList.contains("char-count")) {
+              ta.addEventListener("input", () => {
+                counter.textContent = `${ta.value.length} / ${max}`;
+                counter.style.color =
+                  ta.value.length > max * 0.9 ? "#2a201c" : "#ccc";
+              });
+            }
+          });
 
-        // Live events: clear errors + update header + save
-        card.querySelectorAll("input, select, textarea").forEach((el) => {
-          const events =
-            el.type === "checkbox" || el.type === "radio"
-              ? ["change"]
-              : ["input", "change"];
-          events.forEach((ev) => {
-            el.addEventListener(ev, () => {
-              clearError(el.closest(".field"));
-              if (el.classList.contains("p-name-input"))
-                updateAccordionLabel(uid);
-              updateAccordionDot(uid);
-              saveToStorage();
+          // Live events: clear errors + update header + save
+          card.querySelectorAll("input, select, textarea").forEach((el) => {
+            const events =
+              el.type === "checkbox" || el.type === "radio"
+                ? ["change"]
+                : ["input", "change"];
+            events.forEach((ev) => {
+              el.addEventListener(ev, () => {
+                clearError(el.closest(".field"));
+                if (el.classList.contains("p-name-input"))
+                  updateAccordionLabel(uid);
+                updateAccordionDot(uid);
+                saveToStorage();
+              });
             });
           });
-        });
 
-        return card;
-      }
-
-      // ═══════════════════════════════════════════
-      //  CREATE ACCORDION ITEM
-      // ═══════════════════════════════════════════
-      function createAccordionItem(uid, position) {
-        const item = document.createElement("div");
-        item.className = "acc-item";
-        item.dataset.uid = uid;
-
-        // Header
-        const header = document.createElement("button");
-        header.type = "button";
-        header.className = "acc-header";
-        header.dataset.uid = uid;
-
-        const dot = document.createElement("span");
-        dot.className = "acc-dot";
-
-        const label = document.createElement("span");
-        label.className = "acc-label";
-        label.textContent = `產品 ${position}`;
-
-        const chevron = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "svg",
-        );
-        chevron.setAttribute("class", "acc-chevron");
-        chevron.setAttribute("viewBox", "0 0 20 20");
-        chevron.setAttribute("fill", "none");
-        chevron.setAttribute("stroke", "currentColor");
-        chevron.setAttribute("stroke-width", "2");
-        chevron.setAttribute("stroke-linecap", "round");
-        const path = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "polyline",
-        );
-        path.setAttribute("points", "4 7 10 13 16 7");
-        chevron.appendChild(path);
-
-        header.appendChild(dot);
-        header.appendChild(label);
-        if (position > 1) appendDeleteBtn(header, uid);
-        header.appendChild(chevron);
-
-        header.addEventListener("click", (e) => {
-          if (e.target.closest(".acc-delete")) return;
-          item.classList.toggle("open");
-        });
-
-        item.appendChild(header);
-        return { item, header };
-      }
-
-      function appendDeleteBtn(header, uid) {
-        const delBtn = document.createElement("button");
-        delBtn.type = "button";
-        delBtn.className = "acc-delete";
-        delBtn.title = "刪除此產品";
-        delBtn.textContent = "×";
-        delBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          deleteProduct(uid);
-        });
-        header.appendChild(delBtn);
-      }
-
-      // ═══════════════════════════════════════════
-      //  ADD / DELETE / SWITCH
-      // ═══════════════════════════════════════════
-      function addProduct() {
-        if (products.length >= MAX_PRODUCTS) return;
-        const uid = genUid();
-        const position = products.length + 1;
-
-        const card = createProductCard(uid, position);
-        const { item, header } = createAccordionItem(uid, position);
-        item.appendChild(card);
-
-        document.getElementById("accordionWrap").appendChild(item);
-
-        products.push({ uid, header, card });
-        updateAddBtn();
-        switchToProduct(uid);
-      }
-
-      function deleteProduct(uid) {
-        if (products.length <= 1) return;
-        const idx = products.findIndex((p) => p.uid === uid);
-        if (idx === -1) return;
-
-        const wasOpen = products[idx].card
-          .closest(".acc-item")
-          ?.classList.contains("open");
-        products[idx].card.closest(".acc-item")?.remove();
-        products.splice(idx, 1);
-
-        if (wasOpen) {
-          const newIdx = Math.max(0, idx - 1);
-          switchToProduct(products[newIdx].uid);
+          return card;
         }
 
-        renumberAccordion();
-        updateAddBtn();
-        saveToStorage();
-      }
+        // ═══════════════════════════════════════════
+        //  CREATE ACCORDION ITEM
+        // ═══════════════════════════════════════════
+        function createAccordionItem(uid, position) {
+          const item = document.createElement("div");
+          item.className = "acc-item";
+          item.dataset.uid = uid;
 
-      function switchToProduct(uid) {
-        const item = document.querySelector(`.acc-item[data-uid="${uid}"]`);
-        if (item) item.classList.add("open");
-      }
+          // Header
+          const header = document.createElement("button");
+          header.type = "button";
+          header.className = "acc-header";
+          header.dataset.uid = uid;
 
-      // ═══════════════════════════════════════════
-      //  ACCORDION LABEL & DOT
-      // ═══════════════════════════════════════════
-      function updateAccordionLabel(uid) {
-        const p = products.find((p) => p.uid === uid);
-        if (!p) return;
-        const input = p.card.querySelector(".p-name-input");
-        const label = p.header.querySelector(".acc-label");
-        if (!input || !label) return;
-        const name = input.value.trim();
-        if (name) {
-          label.title = name;
-          label.textContent = name.length > 14 ? name.slice(0, 14) + "…" : name;
-        } else {
-          label.title = "";
-          label.textContent = `產品 ${products.indexOf(p) + 1}`;
+          const dot = document.createElement("span");
+          dot.className = "acc-dot";
+
+          const label = document.createElement("span");
+          label.className = "acc-label";
+          label.textContent = `產品 ${position}`;
+
+          const chevron = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "svg",
+          );
+          chevron.setAttribute("class", "acc-chevron");
+          chevron.setAttribute("viewBox", "0 0 20 20");
+          chevron.setAttribute("fill", "none");
+          chevron.setAttribute("stroke", "currentColor");
+          chevron.setAttribute("stroke-width", "2");
+          chevron.setAttribute("stroke-linecap", "round");
+          const path = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "polyline",
+          );
+          path.setAttribute("points", "4 7 10 13 16 7");
+          chevron.appendChild(path);
+
+          header.appendChild(dot);
+          header.appendChild(label);
+          if (position > 1) appendDeleteBtn(header, uid);
+          header.appendChild(chevron);
+
+          header.addEventListener("click", (e) => {
+            if (e.target.closest(".acc-delete")) return;
+            item.classList.toggle("open");
+          });
+
+          item.appendChild(header);
+          return { item, header };
         }
-      }
 
-      function updateAccordionDot(uid) {
-        const p = products.find((p) => p.uid === uid);
-        if (!p) return;
-        const incomplete = isProductIncomplete(p.card);
-        const dot = p.header.querySelector(".acc-dot");
-        if (dot) dot.classList.toggle("show", incomplete);
-      }
+        function appendDeleteBtn(header, uid) {
+          const delBtn = document.createElement("button");
+          delBtn.type = "button";
+          delBtn.className = "acc-delete";
+          delBtn.title = "刪除此產品";
+          delBtn.textContent = "×";
+          delBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            deleteProduct(uid);
+          });
+          header.appendChild(delBtn);
+        }
 
-      function isProductIncomplete(card) {
-        if (!card.querySelector('input[data-key="name"]')?.value.trim())
-          return true;
-        if (!card.querySelector('select[data-key="category"]')?.value)
-          return true;
-        if (!card.querySelector('input[data-key="spec"]')?.value.trim())
-          return true;
-        if (!card.querySelector('textarea[data-key="desc"]')?.value.trim())
-          return true;
-        if (!card.querySelector('input[type="radio"]:checked')) return true;
-        if (
-          card.querySelectorAll('input[type="checkbox"]:checked').length === 0
-        )
-          return true;
-        return false;
-      }
+        // ═══════════════════════════════════════════
+        //  ADD / DELETE / SWITCH
+        // ═══════════════════════════════════════════
+        function addProduct() {
+          if (products.length >= MAX_PRODUCTS) return;
+          const uid = genUid();
+          const position = products.length + 1;
 
-      function renumberAccordion() {
-        products.forEach((p, i) => {
+          const card = createProductCard(uid, position);
+          const { item, header } = createAccordionItem(uid, position);
+          item.appendChild(card);
+
+          document.getElementById("accordionWrap").appendChild(item);
+
+          products.push({ uid, header, card });
+          updateAddBtn();
+          switchToProduct(uid);
+        }
+
+        function deleteProduct(uid) {
+          if (products.length <= 1) return;
+          const idx = products.findIndex((p) => p.uid === uid);
+          if (idx === -1) return;
+
+          const wasOpen = products[idx].card
+            .closest(".acc-item")
+            ?.classList.contains("open");
+          products[idx].card.closest(".acc-item")?.remove();
+          products.splice(idx, 1);
+
+          if (wasOpen) {
+            const newIdx = Math.max(0, idx - 1);
+            switchToProduct(products[newIdx].uid);
+          }
+
+          renumberAccordion();
+          updateAddBtn();
+          saveToStorage();
+        }
+
+        function switchToProduct(uid) {
+          const item = document.querySelector(`.acc-item[data-uid="${uid}"]`);
+          if (item) item.classList.add("open");
+        }
+
+        // ═══════════════════════════════════════════
+        //  ACCORDION LABEL & DOT
+        // ═══════════════════════════════════════════
+        function updateAccordionLabel(uid) {
+          const p = products.find((p) => p.uid === uid);
+          if (!p) return;
+          const input = p.card.querySelector(".p-name-input");
           const label = p.header.querySelector(".acc-label");
-          const nameVal = p.card.querySelector(".p-name-input")?.value.trim();
-          if (nameVal) {
-            label.title = nameVal;
+          if (!input || !label) return;
+          const name = input.value.trim();
+          if (name) {
+            label.title = name;
             label.textContent =
-              nameVal.length > 14 ? nameVal.slice(0, 14) + "…" : nameVal;
+              name.length > 14 ? name.slice(0, 14) + "…" : name;
           } else {
             label.title = "";
-            label.textContent = `產品 ${i + 1}`;
+            label.textContent = `產品 ${products.indexOf(p) + 1}`;
           }
-          // Update card section title number
-          const cardTitle = p.card.querySelector(".section-title");
-          if (cardTitle) cardTitle.textContent = `產品資料 ${i + 1}`;
-          // Ensure first item never has delete; others do
-          const existingDel = p.header.querySelector(".acc-delete");
-          if (i === 0 && existingDel) {
-            existingDel.remove();
-          } else if (i > 0 && !existingDel) {
-            const chevron = p.header.querySelector(".acc-chevron");
-            const delBtn = document.createElement("button");
-            delBtn.type = "button";
-            delBtn.className = "acc-delete";
-            delBtn.title = "刪除此產品";
-            delBtn.textContent = "×";
-            delBtn.addEventListener("click", (e) => {
-              e.stopPropagation();
-              deleteProduct(p.uid);
-            });
-            p.header.insertBefore(delBtn, chevron);
-          }
-        });
-      }
+        }
 
-      function updateAddBtn() {
-        const disabled = products.length >= MAX_PRODUCTS;
-        const title = disabled ? "最多可新增 5 個產品" : "";
-        const btn = document.getElementById("addProductBtnBottom");
-        if (!btn) return;
-        btn.disabled = disabled;
-        btn.title = title;
-      }
+        function updateAccordionDot(uid) {
+          const p = products.find((p) => p.uid === uid);
+          if (!p) return;
+          const incomplete = isProductIncomplete(p.card);
+          const dot = p.header.querySelector(".acc-dot");
+          if (dot) dot.classList.toggle("show", incomplete);
+        }
 
-      // ═══════════════════════════════════════════
-      //  LOCALSTORAGE
-      // ═══════════════════════════════════════════
-      function saveToStorage() {
-        try {
-          const data = {
-            contact: {
-              company:
-                document.querySelector('input[placeholder="請填寫公司全名"]')
-                  ?.value ?? "",
-              brand:
-                document.querySelector(
-                  'input[placeholder="請填寫品牌名稱（50字以內）"]',
-                )?.value ?? "",
-              name:
-                document.querySelector('input[placeholder="姓名"]')?.value ??
-                "",
-              title:
-                document.querySelector(
-                  'input[placeholder="例：行銷經理、品牌公關"]',
-                )?.value ?? "",
-              phone:
-                document.querySelector('input[placeholder="0212345678"]')
-                  ?.value ?? "",
-              ext:
-                document.querySelector('input[placeholder="123"]')?.value ?? "",
-              email: document.querySelector('input[type="email"]')?.value ?? "",
-            },
-            products: products.map((p) => ({
-              name: p.card.querySelector('input[data-key="name"]')?.value ?? "",
-              category:
-                p.card.querySelector('select[data-key="category"]')?.value ??
-                "",
-              spec: p.card.querySelector('input[data-key="spec"]')?.value ?? "",
-              desc:
-                p.card.querySelector('textarea[data-key="desc"]')?.value ?? "",
-              is_new:
-                p.card.querySelector('input[type="radio"]:checked')?.value ??
-                "",
-              features: [
-                ...p.card.querySelectorAll('input[type="checkbox"]:checked'),
-              ].map((cb) => cb.value),
-              feature_note:
-                p.card.querySelector('textarea[data-key="feature_note"]')
-                  ?.value ?? "",
-            })),
-          };
-          localStorage.setItem(LS_KEY, JSON.stringify(data));
-        } catch (e) {}
-      }
+        function isProductIncomplete(card) {
+          if (!card.querySelector('input[data-key="name"]')?.value.trim())
+            return true;
+          if (!card.querySelector('select[data-key="category"]')?.value)
+            return true;
+          if (!card.querySelector('input[data-key="spec"]')?.value.trim())
+            return true;
+          if (!card.querySelector('textarea[data-key="desc"]')?.value.trim())
+            return true;
+          if (!card.querySelector('input[type="radio"]:checked')) return true;
+          if (
+            card.querySelectorAll('input[type="checkbox"]:checked').length === 0
+          )
+            return true;
+          return false;
+        }
 
-      function loadFromStorage() {
-        try {
-          const raw = localStorage.getItem(LS_KEY);
-          if (!raw) return;
-          const data = JSON.parse(raw);
-
-          // Restore contact
-          const c = data.contact ?? {};
-          fillField('input[placeholder="請填寫公司全名"]', c.company);
-          fillField('input[placeholder="請填寫品牌名稱（50字以內）"]', c.brand);
-          fillField('input[placeholder="姓名"]', c.name);
-          fillField('input[placeholder="例：行銷經理、品牌公關"]', c.title);
-          fillField('input[placeholder="0212345678"]', c.phone);
-          fillField('input[placeholder="123"]', c.ext);
-          fillField('input[type="email"]', c.email);
-
-          // Restore products
-          const saved = data.products ?? [];
-          saved.forEach((pd, i) => {
-            if (i > 0) addProduct(); // first product already exists
-            const p = products[i];
-            if (!p) return;
-            const card = p.card;
-
-            fillCardField(card, 'input[data-key="name"]', pd.name);
-            fillCardField(card, 'select[data-key="category"]', pd.category);
-            fillCardField(card, 'input[data-key="spec"]', pd.spec);
-            fillCardField(card, 'textarea[data-key="desc"]', pd.desc);
-            fillCardField(
-              card,
-              'textarea[data-key="feature_note"]',
-              pd.feature_note,
-            );
-
-            if (pd.is_new) {
-              const r = card.querySelector(
-                `input[type="radio"][value="${pd.is_new}"]`,
-              );
-              if (r) r.checked = true;
+        function renumberAccordion() {
+          products.forEach((p, i) => {
+            const label = p.header.querySelector(".acc-label");
+            const nameVal = p.card.querySelector(".p-name-input")?.value.trim();
+            if (nameVal) {
+              label.title = nameVal;
+              label.textContent =
+                nameVal.length > 14 ? nameVal.slice(0, 14) + "…" : nameVal;
+            } else {
+              label.title = "";
+              label.textContent = `產品 ${i + 1}`;
             }
-            (pd.features ?? []).forEach((v) => {
-              const cb = card.querySelector(
-                `input[type="checkbox"][value="${v}"]`,
-              );
-              if (cb) cb.checked = true;
-            });
-
-            // Sync char counters
-            card.querySelectorAll("textarea").forEach((ta) => {
-              if (!ta.value) return;
-              const counter = ta.nextElementSibling;
-              if (counter?.classList.contains("char-count")) {
-                counter.textContent = `${ta.value.length} / ${ta.getAttribute("maxlength")}`;
-              }
-            });
-
-            updateAccordionLabel(p.uid);
+            // Update card section title number
+            const cardTitle = p.card.querySelector(".section-title");
+            if (cardTitle) cardTitle.textContent = `產品資料 ${i + 1}`;
+            // Ensure first item never has delete; others do
+            const existingDel = p.header.querySelector(".acc-delete");
+            if (i === 0 && existingDel) {
+              existingDel.remove();
+            } else if (i > 0 && !existingDel) {
+              const chevron = p.header.querySelector(".acc-chevron");
+              const delBtn = document.createElement("button");
+              delBtn.type = "button";
+              delBtn.className = "acc-delete";
+              delBtn.title = "刪除此產品";
+              delBtn.textContent = "×";
+              delBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                deleteProduct(p.uid);
+              });
+              p.header.insertBefore(delBtn, chevron);
+            }
           });
-
-          // Switch to first tab
-          if (products.length > 0) switchToProduct(products[0].uid);
-        } catch (e) {}
-      }
-
-      function fillField(sel, val) {
-        const el = document.querySelector(sel);
-        if (el && val) el.value = val;
-      }
-      function fillCardField(card, sel, val) {
-        const el = card.querySelector(sel);
-        if (el && val) el.value = val;
-      }
-
-      // ═══════════════════════════════════════════
-      //  VALIDATION HELPERS
-      // ═══════════════════════════════════════════
-      function showError(field, msg) {
-        if (!field) return;
-        field.classList.add("field-error");
-        if (!field.querySelector(".error-msg")) {
-          const e = document.createElement("p");
-          e.className = "error-msg";
-          e.textContent = msg;
-          const target = field.querySelector(
-            ".choice-grid, .bool-group, textarea, select, input",
-          );
-          if (target) target.after(e);
-          else field.appendChild(e);
         }
-      }
 
-      function clearError(field) {
-        if (!field) return;
-        field.classList.remove("field-error");
-        field.querySelector(".error-msg")?.remove();
-      }
+        function updateAddBtn() {
+          const disabled = products.length >= MAX_PRODUCTS;
+          const title = disabled ? "最多可新增 5 個產品" : "";
+          const btn = document.getElementById("addProductBtnBottom");
+          if (!btn) return;
+          btn.disabled = disabled;
+          btn.title = title;
+        }
 
-      // ═══════════════════════════════════════════
-      //  FULL VALIDATION
-      // ═══════════════════════════════════════════
-      function validateAll() {
-        let valid = true;
-        let firstErrorUid = null; // null = contact section
-        let firstErrorField = null;
+        // ═══════════════════════════════════════════
+        //  LOCALSTORAGE
+        // ═══════════════════════════════════════════
+        function saveToStorage() {
+          try {
+            const data = {
+              contact: {
+                company:
+                  document.querySelector('input[placeholder="請填寫公司全名"]')
+                    ?.value ?? "",
+                brand:
+                  document.querySelector(
+                    'input[placeholder="請填寫品牌名稱（50字以內）"]',
+                  )?.value ?? "",
+                name:
+                  document.querySelector('input[placeholder="姓名"]')?.value ??
+                  "",
+                title:
+                  document.querySelector(
+                    'input[placeholder="例：行銷經理、品牌公關"]',
+                  )?.value ?? "",
+                phone:
+                  document.querySelector('input[placeholder="0212345678"]')
+                    ?.value ?? "",
+                ext:
+                  document.querySelector('input[placeholder="123"]')?.value ??
+                  "",
+                email:
+                  document.querySelector('input[type="email"]')?.value ?? "",
+              },
+              products: products.map((p) => ({
+                name:
+                  p.card.querySelector('input[data-key="name"]')?.value ?? "",
+                category:
+                  p.card.querySelector('select[data-key="category"]')?.value ??
+                  "",
+                spec:
+                  p.card.querySelector('input[data-key="spec"]')?.value ?? "",
+                desc:
+                  p.card.querySelector('textarea[data-key="desc"]')?.value ??
+                  "",
+                is_new:
+                  p.card.querySelector('input[type="radio"]:checked')?.value ??
+                  "",
+                features: [
+                  ...p.card.querySelectorAll('input[type="checkbox"]:checked'),
+                ].map((cb) => cb.value),
+                feature_note:
+                  p.card.querySelector('textarea[data-key="feature_note"]')
+                    ?.value ?? "",
+              })),
+            };
+            localStorage.setItem(LS_KEY, JSON.stringify(data));
+          } catch (e) {}
+        }
 
-        function mark(field, msg, uid) {
-          showError(field, msg);
-          if (!firstErrorField) {
-            firstErrorField = field;
-            firstErrorUid = uid ?? null;
+        function loadFromStorage() {
+          try {
+            const raw = localStorage.getItem(LS_KEY);
+            if (!raw) return;
+            const data = JSON.parse(raw);
+
+            // Restore contact
+            const c = data.contact ?? {};
+            fillField('input[placeholder="請填寫公司全名"]', c.company);
+            fillField(
+              'input[placeholder="請填寫品牌名稱（50字以內）"]',
+              c.brand,
+            );
+            fillField('input[placeholder="姓名"]', c.name);
+            fillField('input[placeholder="例：行銷經理、品牌公關"]', c.title);
+            fillField('input[placeholder="0212345678"]', c.phone);
+            fillField('input[placeholder="123"]', c.ext);
+            fillField('input[type="email"]', c.email);
+
+            // Restore products
+            const saved = data.products ?? [];
+            saved.forEach((pd, i) => {
+              if (i > 0) addProduct(); // first product already exists
+              const p = products[i];
+              if (!p) return;
+              const card = p.card;
+
+              fillCardField(card, 'input[data-key="name"]', pd.name);
+              fillCardField(card, 'select[data-key="category"]', pd.category);
+              fillCardField(card, 'input[data-key="spec"]', pd.spec);
+              fillCardField(card, 'textarea[data-key="desc"]', pd.desc);
+              fillCardField(
+                card,
+                'textarea[data-key="feature_note"]',
+                pd.feature_note,
+              );
+
+              if (pd.is_new) {
+                const r = card.querySelector(
+                  `input[type="radio"][value="${pd.is_new}"]`,
+                );
+                if (r) r.checked = true;
+              }
+              (pd.features ?? []).forEach((v) => {
+                const cb = card.querySelector(
+                  `input[type="checkbox"][value="${v}"]`,
+                );
+                if (cb) cb.checked = true;
+              });
+
+              // Sync char counters
+              card.querySelectorAll("textarea").forEach((ta) => {
+                if (!ta.value) return;
+                const counter = ta.nextElementSibling;
+                if (counter?.classList.contains("char-count")) {
+                  counter.textContent = `${ta.value.length} / ${ta.getAttribute("maxlength")}`;
+                }
+              });
+
+              updateAccordionLabel(p.uid);
+            });
+
+            // Switch to first tab
+            if (products.length > 0) switchToProduct(products[0].uid);
+          } catch (e) {}
+        }
+
+        function fillField(sel, val) {
+          const el = document.querySelector(sel);
+          if (el && val) el.value = val;
+        }
+        function fillCardField(card, sel, val) {
+          const el = card.querySelector(sel);
+          if (el && val) el.value = val;
+        }
+
+        // ═══════════════════════════════════════════
+        //  VALIDATION HELPERS
+        // ═══════════════════════════════════════════
+        function showError(field, msg) {
+          if (!field) return;
+          field.classList.add("field-error");
+          if (!field.querySelector(".error-msg")) {
+            const e = document.createElement("p");
+            e.className = "error-msg";
+            e.textContent = msg;
+            const target = field.querySelector(
+              ".choice-grid, .bool-group, textarea, select, input",
+            );
+            if (target) target.after(e);
+            else field.appendChild(e);
           }
-          valid = false;
         }
 
-        function checkText(el, msg, uid) {
-          if (!el) return;
-          const f = el.closest(".field");
-          clearError(f);
-          if (!el.value.trim()) mark(f, msg, uid);
+        function clearError(field) {
+          if (!field) return;
+          field.classList.remove("field-error");
+          field.querySelector(".error-msg")?.remove();
         }
 
-        function checkSelect(el, msg, uid) {
-          if (!el) return;
-          const f = el.closest(".field");
-          clearError(f);
-          if (!el.value) mark(f, msg, uid);
-        }
+        // ═══════════════════════════════════════════
+        //  FULL VALIDATION
+        // ═══════════════════════════════════════════
+        function validateAll() {
+          let valid = true;
+          let firstErrorUid = null; // null = contact section
+          let firstErrorField = null;
 
-        // ── Contact ──
-        checkText(
-          document.querySelector('input[placeholder="請填寫公司全名"]'),
-          "請填寫公司名稱",
-        );
-        checkText(
-          document.querySelector(
-            'input[placeholder="請填寫品牌名稱（50字以內）"]',
-          ),
-          "請填寫品牌名稱",
-        );
-        checkText(
-          document.querySelector('input[placeholder="姓名"]'),
-          "請填寫聯絡人姓名",
-        );
-
-        const phoneEl = document.querySelector(
-          'input[placeholder="0212345678"]',
-        );
-        if (phoneEl) {
-          const f = phoneEl.closest(".field");
-          clearError(f);
-          if (!/^[0-9]{8,12}$/.test(phoneEl.value.trim()))
-            mark(f, "請填寫純數字電話號碼（8–12位）");
-        }
-
-        const emailEl = document.querySelector('input[type="email"]');
-        if (emailEl) {
-          const f = emailEl.closest(".field");
-          clearError(f);
-          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim()))
-            mark(f, "請填寫正確的 Email 格式");
-        }
-
-        // ── Products ──
-        products.forEach((p) => {
-          const card = p.card;
-          let cardHasError = false;
-
-          function cardMark(field, msg) {
-            mark(field, msg, p.uid);
-            cardHasError = true;
+          function mark(field, msg, uid) {
+            showError(field, msg);
+            if (!firstErrorField) {
+              firstErrorField = field;
+              firstErrorUid = uid ?? null;
+            }
+            valid = false;
           }
 
-          const nameEl = card.querySelector('input[data-key="name"]');
-          const catEl = card.querySelector('select[data-key="category"]');
-          const specEl = card.querySelector('input[data-key="spec"]');
-          const descEl = card.querySelector('textarea[data-key="desc"]');
-
-          [nameEl, specEl, descEl].forEach((el, i) => {
+          function checkText(el, msg, uid) {
             if (!el) return;
             const f = el.closest(".field");
             clearError(f);
-            if (!el.value.trim())
-              cardMark(
-                f,
-                ["請填寫產品名稱", "請填寫產品規格", "請填寫產品內容"][i],
-              );
-          });
-
-          if (catEl) {
-            const f = catEl.closest(".field");
-            clearError(f);
-            if (!catEl.value) cardMark(f, "請選擇產品類別");
+            if (!el.value.trim()) mark(f, msg, uid);
           }
 
-          const anyRadio = card.querySelector('input[type="radio"]');
-          if (anyRadio && !card.querySelector('input[type="radio"]:checked')) {
-            const f = anyRadio.closest(".field");
+          function checkSelect(el, msg, uid) {
+            if (!el) return;
+            const f = el.closest(".field");
             clearError(f);
-            cardMark(f, "請選擇此產品是否為 2026 新品");
+            if (!el.value) mark(f, msg, uid);
           }
 
-          const anyCheckbox = card.querySelector('input[type="checkbox"]');
-          if (
-            anyCheckbox &&
-            card.querySelectorAll('input[type="checkbox"]:checked').length === 0
-          ) {
-            const f = anyCheckbox.closest(".field");
+          // ── Contact ──
+          checkText(
+            document.querySelector('input[placeholder="請填寫公司全名"]'),
+            "請填寫公司名稱",
+          );
+          checkText(
+            document.querySelector(
+              'input[placeholder="請填寫品牌名稱（50字以內）"]',
+            ),
+            "請填寫品牌名稱",
+          );
+          checkText(
+            document.querySelector('input[placeholder="姓名"]'),
+            "請填寫聯絡人姓名",
+          );
+
+          const phoneEl = document.querySelector(
+            'input[placeholder="0212345678"]',
+          );
+          if (phoneEl) {
+            const f = phoneEl.closest(".field");
             clearError(f);
-            cardMark(f, "請至少選擇一項最推特點");
+            if (!/^[0-9]{8,12}$/.test(phoneEl.value.trim()))
+              mark(f, "請填寫純數字電話號碼（8–12位）");
           }
 
-          // Update tab dot
-          const dot = p.header.querySelector(".acc-dot");
-          if (dot) dot.classList.toggle("show", cardHasError);
-        });
+          const emailEl = document.querySelector('input[type="email"]');
+          if (emailEl) {
+            const f = emailEl.closest(".field");
+            clearError(f);
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim()))
+              mark(f, "請填寫正確的 Email 格式");
+          }
 
-        return { valid, firstErrorUid, firstErrorField };
-      }
+          // ── Products ──
+          products.forEach((p) => {
+            const card = p.card;
+            let cardHasError = false;
 
-      // ═══════════════════════════════════════════
-      //  CONTACT SECTION: live clear-on-type
-      // ═══════════════════════════════════════════
-      document
-        .querySelectorAll(".section input, .section select, .section textarea")
-        .forEach((el) => {
-          ["input", "change"].forEach((ev) => {
-            el.addEventListener(ev, () => {
-              clearError(el.closest(".field"));
-              saveToStorage();
+            function cardMark(field, msg) {
+              mark(field, msg, p.uid);
+              cardHasError = true;
+            }
+
+            const nameEl = card.querySelector('input[data-key="name"]');
+            const catEl = card.querySelector('select[data-key="category"]');
+            const specEl = card.querySelector('input[data-key="spec"]');
+            const descEl = card.querySelector('textarea[data-key="desc"]');
+
+            [nameEl, specEl, descEl].forEach((el, i) => {
+              if (!el) return;
+              const f = el.closest(".field");
+              clearError(f);
+              if (!el.value.trim())
+                cardMark(
+                  f,
+                  ["請填寫產品名稱", "請填寫產品規格", "請填寫產品內容"][i],
+                );
             });
+
+            if (catEl) {
+              const f = catEl.closest(".field");
+              clearError(f);
+              if (!catEl.value) cardMark(f, "請選擇產品類別");
+            }
+
+            const anyRadio = card.querySelector('input[type="radio"]');
+            if (
+              anyRadio &&
+              !card.querySelector('input[type="radio"]:checked')
+            ) {
+              const f = anyRadio.closest(".field");
+              clearError(f);
+              cardMark(f, "請選擇此產品是否為 2026 新品");
+            }
+
+            const anyCheckbox = card.querySelector('input[type="checkbox"]');
+            if (
+              anyCheckbox &&
+              card.querySelectorAll('input[type="checkbox"]:checked').length ===
+                0
+            ) {
+              const f = anyCheckbox.closest(".field");
+              clearError(f);
+              cardMark(f, "請至少選擇一項最推特點");
+            }
+
+            // Update tab dot
+            const dot = p.header.querySelector(".acc-dot");
+            if (dot) dot.classList.toggle("show", cardHasError);
           });
-        });
 
-      // ═══════════════════════════════════════════
-      //  COLLECT FORM DATA
-      // ═══════════════════════════════════════════
-      const CATEGORY_MAP = {
-        保養: 0,
-        香氛: 1,
-        髮品: 2,
-        口服: 3,
-        儀器: 4,
-        醫美: 5,
-      };
-      const FEATURE_MAP = {
-        健康保養: 0,
-        永續信念: 1,
-        防禦修護: 2,
-        頂級珍稀: 3,
-        療癒儀式: 4,
-        醫美共生: 5,
-        其它: 6,
-      };
-
-      function collectFormData() {
-        return {
-          contact: {
-            company:
-              document
-                .querySelector('input[placeholder="請填寫公司全名"]')
-                ?.value.trim() ?? "",
-            brand:
-              document
-                .querySelector(
-                  'input[placeholder="請填寫品牌名稱（50字以內）"]',
-                )
-                ?.value.trim() ?? "",
-            name:
-              document
-                .querySelector('input[placeholder="姓名"]')
-                ?.value.trim() ?? "",
-            title:
-              document
-                .querySelector('input[placeholder="例：行銷經理、品牌公關"]')
-                ?.value.trim() ?? "",
-            phone:
-              document
-                .querySelector('input[placeholder="0212345678"]')
-                ?.value.trim() ?? "",
-            ext:
-              document
-                .querySelector('input[placeholder="123"]')
-                ?.value.trim() ?? "",
-            email:
-              document.querySelector('input[type="email"]')?.value.trim() ?? "",
-          },
-          products: products.map((p, i) => ({
-            position: i + 1,
-            name:
-              p.card.querySelector('input[data-key="name"]')?.value.trim() ??
-              "",
-            category:
-              CATEGORY_MAP[
-                p.card.querySelector('select[data-key="category"]')?.value
-              ] ?? null,
-            spec:
-              p.card.querySelector('input[data-key="spec"]')?.value.trim() ??
-              "",
-            desc:
-              p.card.querySelector('textarea[data-key="desc"]')?.value.trim() ??
-              "",
-            is_new:
-              p.card.querySelector('input[type="radio"]:checked')?.value ===
-              "yes",
-            features: [
-              ...p.card.querySelectorAll('input[type="checkbox"]:checked'),
-            ].map((cb) => FEATURE_MAP[cb.value]),
-            feature_note:
-              p.card
-                .querySelector('textarea[data-key="feature_note"]')
-                ?.value.trim() ?? "",
-          })),
-        };
-      }
-
-      // ═══════════════════════════════════════════
-      //  SUBMIT ERROR DISPLAY
-      // ═══════════════════════════════════════════
-      function showSubmitError(json) {
-        const body = document.getElementById("errorBody");
-        if (json.errors?.length) {
-          body.innerHTML = json.errors
-            .map((e) => `<p>${e.message}</p>`)
-            .join("");
-        } else {
-          body.innerHTML = `<p>${json.message || "送出失敗，請稍後再試"}</p>`;
+          return { valid, firstErrorUid, firstErrorField };
         }
-        document.getElementById("error-overlay").classList.add("show");
-      }
 
-      document.getElementById("errorCloseBtn").addEventListener("click", () => {
-        document.getElementById("error-overlay").classList.remove("show");
-      });
-      document
-        .getElementById("error-overlay")
-        .addEventListener("click", (e) => {
-          if (e.target === e.currentTarget)
-            e.currentTarget.classList.remove("show");
-        });
-
-      // ═══════════════════════════════════════════
-      //  SUBMIT
-      // ═══════════════════════════════════════════
-      document
-        .getElementById("submitBtn")
-        .addEventListener("click", async () => {
-          const { valid, firstErrorUid, firstErrorField } = validateAll();
-
-          if (!valid) {
-            if (firstErrorUid !== null) switchToProduct(firstErrorUid);
-            setTimeout(() => {
-              firstErrorField?.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
+        // ═══════════════════════════════════════════
+        //  CONTACT SECTION: live clear-on-type
+        // ═══════════════════════════════════════════
+        document
+          .querySelectorAll(
+            ".section input, .section select, .section textarea",
+          )
+          .forEach((el) => {
+            ["input", "change"].forEach((ev) => {
+              el.addEventListener(ev, () => {
+                clearError(el.closest(".field"));
+                saveToStorage();
               });
-            }, 80);
-            return;
-          }
-
-          const payload = collectFormData();
-
-          const btn = document.getElementById("submitBtn");
-          btn.disabled = true;
-          btn.textContent = "送出中…";
-
-          try {
-            const res = await fetch(API_URL, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payload),
             });
-            const json = await res.json();
+          });
 
-            if (!res.ok) {
-              showSubmitError(json);
-              btn.disabled = false;
-              btn.textContent = "送出報名";
+        // ═══════════════════════════════════════════
+        //  COLLECT FORM DATA
+        // ═══════════════════════════════════════════
+        const CATEGORY_MAP = {
+          保養: 0,
+          香氛: 1,
+          髮品: 2,
+          口服: 3,
+          儀器: 4,
+          醫美: 5,
+        };
+        const FEATURE_MAP = {
+          健康保養: 0,
+          永續信念: 1,
+          防禦修護: 2,
+          頂級珍稀: 3,
+          療癒儀式: 4,
+          醫美共生: 5,
+          其它: 6,
+        };
+
+        function collectFormData() {
+          return {
+            contact: {
+              company:
+                document
+                  .querySelector('input[placeholder="請填寫公司全名"]')
+                  ?.value.trim() ?? "",
+              brand:
+                document
+                  .querySelector(
+                    'input[placeholder="請填寫品牌名稱（50字以內）"]',
+                  )
+                  ?.value.trim() ?? "",
+              name:
+                document
+                  .querySelector('input[placeholder="姓名"]')
+                  ?.value.trim() ?? "",
+              title:
+                document
+                  .querySelector('input[placeholder="例：行銷經理、品牌公關"]')
+                  ?.value.trim() ?? "",
+              phone:
+                document
+                  .querySelector('input[placeholder="0212345678"]')
+                  ?.value.trim() ?? "",
+              ext:
+                document
+                  .querySelector('input[placeholder="123"]')
+                  ?.value.trim() ?? "",
+              email:
+                document.querySelector('input[type="email"]')?.value.trim() ??
+                "",
+            },
+            products: products.map((p, i) => ({
+              position: i + 1,
+              name:
+                p.card.querySelector('input[data-key="name"]')?.value.trim() ??
+                "",
+              category:
+                CATEGORY_MAP[
+                  p.card.querySelector('select[data-key="category"]')?.value
+                ] ?? null,
+              spec:
+                p.card.querySelector('input[data-key="spec"]')?.value.trim() ??
+                "",
+              desc:
+                p.card
+                  .querySelector('textarea[data-key="desc"]')
+                  ?.value.trim() ?? "",
+              is_new:
+                p.card.querySelector('input[type="radio"]:checked')?.value ===
+                "yes",
+              features: [
+                ...p.card.querySelectorAll('input[type="checkbox"]:checked'),
+              ].map((cb) => FEATURE_MAP[cb.value]),
+              feature_note:
+                p.card
+                  .querySelector('textarea[data-key="feature_note"]')
+                  ?.value.trim() ?? "",
+            })),
+          };
+        }
+
+        // ═══════════════════════════════════════════
+        //  SUBMIT ERROR DISPLAY
+        // ═══════════════════════════════════════════
+        function showSubmitError(json) {
+          const body = document.getElementById("errorBody");
+          if (json.errors?.length) {
+            body.innerHTML = json.errors
+              .map((e) => `<p>${e.message}</p>`)
+              .join("");
+          } else {
+            body.innerHTML = `<p>${json.message || "送出失敗，請稍後再試"}</p>`;
+          }
+          document.getElementById("error-overlay").classList.add("show");
+        }
+
+        document
+          .getElementById("errorCloseBtn")
+          .addEventListener("click", () => {
+            document.getElementById("error-overlay").classList.remove("show");
+          });
+        document
+          .getElementById("error-overlay")
+          .addEventListener("click", (e) => {
+            if (e.target === e.currentTarget)
+              e.currentTarget.classList.remove("show");
+          });
+
+        // ═══════════════════════════════════════════
+        //  SUBMIT
+        // ═══════════════════════════════════════════
+        document
+          .getElementById("submitBtn")
+          .addEventListener("click", async () => {
+            const { valid, firstErrorUid, firstErrorField } = validateAll();
+
+            if (!valid) {
+              if (firstErrorUid !== null) switchToProduct(firstErrorUid);
+              setTimeout(() => {
+                firstErrorField?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }, 80);
               return;
             }
 
-            // Build success product list
-            const list = document.getElementById("successProductList");
-            const body = document.getElementById("successBody");
-            list.innerHTML = "";
-            products.forEach((p, i) => {
-              const name =
-                p.card.querySelector('input[data-key="name"]')?.value.trim() ||
-                `產品 ${i + 1}`;
-              const cat =
-                p.card.querySelector('select[data-key="category"]')?.value ||
-                "";
-              const li = document.createElement("li");
-              li.innerHTML = `<span class="pill-num">${i + 1}</span><span>${name}${cat ? '　<span style="opacity:.55;font-size:.82em;">' + cat + "</span>" : ""}</span>`;
-              list.appendChild(li);
-            });
-            body.innerHTML = `感謝您報名女人我最大賞 2026，共報名 <strong>${products.length}</strong> 項產品：`;
+            const payload = collectFormData();
+
+            const btn = document.getElementById("submitBtn");
+            btn.disabled = true;
+            btn.textContent = "送出中…";
 
             try {
-              localStorage.removeItem(LS_KEY);
-            } catch (e) {}
-            document.getElementById("success-overlay").classList.add("show");
-          } catch (err) {
-            showSubmitError({ message: "網路連線異常，請稍後再試" });
-            btn.disabled = false;
-            btn.textContent = "送出報名";
+              const res = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+              });
+              const json = await res.json();
+
+              if (!res.ok) {
+                showSubmitError(json);
+                btn.disabled = false;
+                btn.textContent = "送出報名";
+                return;
+              }
+
+              // Build success product list
+              const list = document.getElementById("successProductList");
+              const body = document.getElementById("successBody");
+              list.innerHTML = "";
+              products.forEach((p, i) => {
+                const name =
+                  p.card
+                    .querySelector('input[data-key="name"]')
+                    ?.value.trim() || `產品 ${i + 1}`;
+                const cat =
+                  p.card.querySelector('select[data-key="category"]')?.value ||
+                  "";
+                const li = document.createElement("li");
+                li.innerHTML = `<span class="pill-num">${i + 1}</span><span>${name}${cat ? '　<span style="opacity:.55;font-size:.82em;">' + cat + "</span>" : ""}</span>`;
+                list.appendChild(li);
+              });
+              body.innerHTML = `感謝您報名女人我最大賞 2026，共報名 <strong>${products.length}</strong> 項產品：`;
+
+              try {
+                localStorage.removeItem(LS_KEY);
+              } catch (e) {}
+              document.getElementById("success-overlay").classList.add("show");
+            } catch (err) {
+              showSubmitError({ message: "網路連線異常，請稍後再試" });
+              btn.disabled = false;
+              btn.textContent = "送出報名";
+            }
+          });
+
+        // ═══════════════════════════════════════════
+        //  ADD PRODUCT BUTTON
+        // ═══════════════════════════════════════════
+        document
+          .getElementById("addProductBtnBottom")
+          .addEventListener("click", () => {
+            addProduct();
+            saveToStorage();
+            setTimeout(() => {
+              const items = document.querySelectorAll(".acc-item");
+              const last = items[items.length - 1];
+              if (last)
+                last.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 80);
+          });
+
+        // ═══════════════════════════════════════════
+        //  NAV SCROLL BEHAVIOUR
+        // ═══════════════════════════════════════════
+        (function () {
+          const nav = document.getElementById("siteNav");
+          const banner = document.querySelector(".banner-wrap");
+          function updateNav() {
+            const threshold = banner ? banner.offsetHeight : 320;
+            nav.classList.toggle("scrolled", window.scrollY > threshold - 76);
           }
-        });
+          window.addEventListener("scroll", updateNav, { passive: true });
+          updateNav();
+        })();
 
-      // ═══════════════════════════════════════════
-      //  ADD PRODUCT BUTTON
-      // ═══════════════════════════════════════════
-      document
-        .getElementById("addProductBtnBottom")
-        .addEventListener("click", () => {
-          addProduct();
-          saveToStorage();
-          setTimeout(() => {
-            const items = document.querySelectorAll(".acc-item");
-            const last = items[items.length - 1];
-            if (last)
-              last.scrollIntoView({ behavior: "smooth", block: "start" });
-          }, 80);
-        });
-
-      // ═══════════════════════════════════════════
-      //  NAV SCROLL BEHAVIOUR
-      // ═══════════════════════════════════════════
-      (function () {
-        const nav = document.getElementById("siteNav");
-        const banner = document.querySelector(".banner-wrap");
-        function updateNav() {
-          const threshold = banner ? banner.offsetHeight : 320;
-          nav.classList.toggle("scrolled", window.scrollY > threshold - 76);
-        }
-        window.addEventListener("scroll", updateNav, { passive: true });
-        updateNav();
-      })();
-
-      // ═══════════════════════════════════════════
-      //  INIT: create first product + load storage
-      // ═══════════════════════════════════════════
-      addProduct(); // creates product 1
-      loadFromStorage();
+        // ═══════════════════════════════════════════
+        //  INIT: create first product + load storage
+        // ═══════════════════════════════════════════
+        addProduct(); // creates product 1
+        loadFromStorage();
       } // end of "if (!isRegistrationClosed())" block
     </script>
   </body>

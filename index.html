@@ -6,7 +6,7 @@
     <title>女人我最大賞線上報名</title>
     <meta
       name="description"
-      content="2026女人我最大全新企劃UNFURL六大年度關鍵字，邀請品牌共襄盛舉，共同詮釋當代美的趨勢。報名時間即日起至2026年6月30日23:59截止。"
+      content="2026 女人我最大賞以「UNFURL」作為年度關鍵字，女人我最大編輯部、達人與醫師團隊，從評審試用昇華為年度趨勢觀察，讓所有入選商品重新詮釋美的趨勢與市場動向。報名時間為即日起至2026年6月30日23:59截止。"
     />
     <link
       rel="image_src"
@@ -20,7 +20,7 @@
     <meta property="og:title" content="女人我最大賞線上報名" />
     <meta
       property="og:description"
-      content="2026女人我最大全新企劃UNFURL六大年度關鍵字，邀請品牌共襄盛舉，共同詮釋當代美的趨勢。報名時間即日起至2026年6月30日23:59截止。"
+      content="2026 女人我最大賞以「UNFURL」作為年度關鍵字，女人我最大編輯部、達人與醫師團隊，從評審試用昇華為年度趨勢觀察，讓所有入選商品重新詮釋美的趨勢與市場動向。報名時間為即日起至2026年6月30日23:59截止。"
     />
     <meta
       property="og:image"
@@ -145,9 +145,7 @@
       </div>
 
       <div class="hero-content">
-        <h1 class="hero-manifesto-title">
-          美，由我綻放
-        </h1>
+        <h1 class="hero-manifesto-title">美，由我綻放</h1>
         <p class="hero-manifesto-body">
           2026 女人我最大賞以「UNFURL」作為年度關鍵字。<br />編輯部、達人與醫師團隊，從評審試用轉向趨勢觀察與市場解讀。<br />產品以「趨勢佐證」的角度被看見，每件入選品項，都是市場風向與消費指標。
         </p>
@@ -159,7 +157,8 @@
           href="/beautyawards/registration/form"
           class="btn btn-primary btn-lg hero-cta-wrap"
           id="heroCta"
-          ><span class="cta-label">前往報名</span><span class="arrow">→</span></a
+          ><span class="cta-label">前往報名</span
+          ><span class="arrow">→</span></a
         >
       </div>
     </header>
@@ -169,9 +168,7 @@
       <div class="container">
         <div class="sec-num">— 02 ／ Six Petals</div>
         <h2 class="sec-title zh-primary"><em>六大趨勢</em></h2>
-        <div class="sec-title-tc">
-          U · N · F · U · R · L
-        </div>
+        <div class="sec-title-tc">U · N · F · U · R · L</div>
 
         <div class="bloom-wrap">
           <div class="bloom-svg">
@@ -452,7 +449,9 @@
       // Registration closes 2026-06-30 23:59:59 (+08:00); treat 7/1 00:00 as the cutoff
       const REGISTRATION_CUTOFF = new Date("2026-07-01T00:00:00+08:00");
       // Debug override via URL: ?debug=closed forces closed state, ?debug=open forces open
-      const DEBUG_OVERRIDE = new URLSearchParams(window.location.search).get("debug");
+      const DEBUG_OVERRIDE = new URLSearchParams(window.location.search).get(
+        "debug",
+      );
       const isRegistrationClosed = () => {
         if (DEBUG_OVERRIDE === "closed") return true;
         if (DEBUG_OVERRIDE === "open") return false;
@@ -479,7 +478,9 @@
         if (dateLabel) dateLabel.textContent = "報名結束日期";
 
         const body = document.getElementById("ctaBody");
-        if (body) body.innerHTML = "報名於 06.30 結束。<br />下一站，10.05 美妝年度盛典。";
+        if (body)
+          body.innerHTML =
+            "報名於 06.30 結束。<br />下一站，10.05 美妝年度盛典。";
       }
       applyClosedState();
 
