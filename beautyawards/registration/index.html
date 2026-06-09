@@ -340,15 +340,9 @@
             </div>
             <div class="tl-item future">
               <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
-              <div class="tl-date">Sep 下旬</div>
-              <div class="tl-title">美妝年度<br />趨勢揭曉</div>
-              <div class="tl-note">UNFURL 趨勢報告<br />官網與社群同步發布</div>
-            </div>
-            <div class="tl-item future">
-              <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
-              <div class="tl-date">Oct 05</div>
-              <div class="tl-title">美妝年度盛典</div>
-              <div class="tl-note">美妝趨勢發布 × 年度 Beauty Picks</div>
+              <div class="tl-date">Sep - Oct</div>
+              <div class="tl-title">趨勢揭曉<br />年度盛會</div>
+              <div class="tl-note">UNFURL 趨勢報告<br />美妝年度盛會</div>
             </div>
           </div>
         </div>
@@ -491,13 +485,9 @@
         let currentIndex;
         if (!isRegistrationClosed())
           currentIndex = 0; // 報名開放中
-        else if (now < new Date("2026-09-20T00:00:00+08:00"))
-          currentIndex = 1; // 報名截止
-        else if (now < new Date("2026-10-05T00:00:00+08:00"))
+        else if (now < new Date("2026-09-01T00:00:00+08:00"))
           currentIndex = 2; // 專業精選
-        else if (now < new Date("2026-10-06T00:00:00+08:00"))
-          currentIndex = 3; // 美妝年度趨勢揭曉
-        else currentIndex = 4; // 美妝年度盛典
+        else currentIndex = 3; // 趨勢揭曉 / 年度盛會
 
         items.forEach((item, i) => {
           item.classList.remove("now", "future");
