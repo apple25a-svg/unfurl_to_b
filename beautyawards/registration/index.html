@@ -6,7 +6,7 @@
     <title>女人我最大賞線上報名</title>
     <meta
       name="description"
-      content="2026 女人我最大賞以「UNFURL」作為年度關鍵字，女人我最大編輯部、達人與醫師團隊，從評審試用昇華為年度趨勢觀察，讓所有入選商品重新詮釋美的趨勢與市場動向。報名時間為即日起至2026年6月30日23:59截止。"
+      content="2026 女人我最大賞以「UNFURL」作為年度關鍵字，女人我最大編輯部、達人與醫師團隊，從評審試用昇華為年度趨勢觀察，讓所有入選商品重新詮釋美的趨勢與市場動向。報名時間為即日起至2026年7月31日23:59截止。"
     />
     <link
       rel="image_src"
@@ -20,7 +20,7 @@
     <meta property="og:title" content="女人我最大賞線上報名" />
     <meta
       property="og:description"
-      content="2026 女人我最大賞以「UNFURL」作為年度關鍵字，女人我最大編輯部、達人與醫師團隊，從評審試用昇華為年度趨勢觀察，讓所有入選商品重新詮釋美的趨勢與市場動向。報名時間為即日起至2026年6月30日23:59截止。"
+      content="2026 女人我最大賞以「UNFURL」作為年度關鍵字，女人我最大編輯部、達人與醫師團隊，從評審試用昇華為年度趨勢觀察，讓所有入選商品重新詮釋美的趨勢與市場動向。報名時間為即日起至2026年7月31日23:59截止。"
     />
     <meta
       property="og:image"
@@ -150,7 +150,7 @@
           2026 女人我最大賞以「UNFURL」作為年度關鍵字。<br />編輯部、達人與醫師團隊，從評審試用轉向趨勢觀察與市場解讀。<br />產品以「趨勢佐證」的角度被看見，每件入選品項，都是市場風向與消費指標。
         </p>
         <div class="hero-dates">
-          <span>報名｜即日起至 <strong>2026.06.30</strong></span>
+          <span>報名｜即日起至 <strong>2026.07.31</strong></span>
           <span>美妝年度盛典｜<strong>2026.10</strong></span>
         </div>
         <a
@@ -325,7 +325,7 @@
             </div>
             <div class="tl-item">
               <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
-              <div class="tl-date">Jun 30</div>
+              <div class="tl-date">Jul 31</div>
               <div class="tl-title">報名截止</div>
               <div class="tl-note">當日 23:59 關閉<br />逾時不予受理</div>
             </div>
@@ -353,7 +353,7 @@
     <section class="cta">
       <div class="cta-inner">
         <div class="cta-eyebrow" id="ctaEyebrow">Registration　·　Now Open</div>
-        <div class="cta-date">06.30</div>
+        <div class="cta-date">07.31</div>
         <div class="cta-date-label" id="ctaDateLabel">報名截止日期</div>
         <p class="cta-tc" id="ctaBody">
           把你的產品交給女人我最大賞，<br />由我們替它寫進今年的趨勢裡。
@@ -438,8 +438,8 @@
       setPetal(0);
 
       // ---- Registration deadline (single source of truth) ----
-      // Registration closes 2026-06-30 23:59:59 (+08:00); treat 7/1 00:00 as the cutoff
-      const REGISTRATION_CUTOFF = new Date("2026-07-01T00:00:00+08:00");
+      // Registration closes 2026-07-31 23:59:59 (+08:00); treat 8/1 00:00 as the cutoff
+      const REGISTRATION_CUTOFF = new Date("2026-08-01T00:00:00+08:00");
       // Debug override via URL: ?debug=closed forces closed state, ?debug=open forces open
       const DEBUG_OVERRIDE = new URLSearchParams(window.location.search).get(
         "debug",
@@ -472,7 +472,7 @@
         const body = document.getElementById("ctaBody");
         if (body)
           body.innerHTML =
-            "報名於 06.30 結束。<br />下一站，10月 美妝年度盛典";
+            "報名於 07.31 結束。<br />下一站，10月 美妝年度盛典";
       }
       applyClosedState();
 

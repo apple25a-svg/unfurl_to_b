@@ -108,7 +108,7 @@ nav {
   font-size: 20px;
   font-weight: 500;
 }
-/* Closed state — registration period ended (after 2026-06-30 23:59:59 +08:00)
+/* Closed state — registration period ended (after 2026-07-31 23:59:59 +08:00)
        Visual: downgrade from "primary CTA" to "status indicator" — outlined ghost,
        sits quietly in the layout without competing for attention */
 .btn.is-closed,
