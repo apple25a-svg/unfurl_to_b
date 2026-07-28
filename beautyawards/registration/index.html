@@ -438,8 +438,8 @@
       setPetal(0);
 
       // ---- Registration deadline (single source of truth) ----
-      // Registration closes 2026-07-31 23:59:59 (+08:00); treat 8/1 00:00 as the cutoff
-      const REGISTRATION_CUTOFF = new Date("2026-08-01T00:00:00+08:00");
+      // Registration closes 2026-10-31 23:59:59 (+08:00); treat 11/1 00:00 as the cutoff
+      const REGISTRATION_CUTOFF = new Date("2026-11-01T00:00:00+08:00");
       // Debug override via URL: ?debug=closed forces closed state, ?debug=open forces open
       const DEBUG_OVERRIDE = new URLSearchParams(window.location.search).get(
         "debug",
